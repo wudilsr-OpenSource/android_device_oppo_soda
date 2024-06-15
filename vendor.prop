@@ -108,6 +108,9 @@ ro.vendor.bluetooth.wipower=false
 persist.vendor.camera.privapp.list=com.oppo.camera
 vendor.camera.aux.packagelist=com.oem.autotest,com.oppo.factorymode,com.oppo.camera
 
+# Camera
+vendor.camera.aux.packageexcludelist=org.telegram.messenger,org.thunderdog.challegram,us.zoom.videomeetings
+
 # Chipset
 ro.soc.manufacturer=Qualcomm
 ro.soc.model=SM4250
