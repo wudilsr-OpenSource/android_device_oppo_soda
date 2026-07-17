@@ -1,17 +1,11 @@
 #
-# Copyright (C) 2022 The LineageOS Project
+# Copyright (C) 2024 The LineageOS Project
 #
 # SPDX-License-Identifier: Apache-2.0
 #
 
-on property:ro.boot.project_name=20880
-    setprop ro.boot.hardware.revision "METRO"
+on property:ro.boot.project_name=20021
+    setprop ro.boot.hardware.revision "CN"
 
-on property:ro.boot.project_name=20881
-    setprop ro.boot.hardware.revision "NA"
-
-on property:ro.boot.project_name=20882
-    setprop ro.boot.hardware.revision "TMO"
-
-on property:ro.boot.project_name=20883
-    setprop ro.boot.hardware.revision "EU"
+on property:ro.boot.project_name=20221
+    setprop ro.boot.hardware.revision "IN"
