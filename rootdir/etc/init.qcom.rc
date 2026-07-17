@@ -28,13 +28,10 @@
 #ifdef VENDOR_EDIT
 import /vendor/etc/init/hw/init.oem.rc
 import /vendor/etc/init/hw/init.oem.debug.rc
-import /vendor/etc/init/hw/init.oem.minidump.sdx55m.rc
-import /vendor/etc/init/hw/init.oem.sec.rc
 #endif VENDOR_EDIT
 
 import /vendor/etc/init/hw/init.qti.ufs.rc
 import /vendor/etc/init/hw/init.qcom.usb.rc
-import /vendor/etc/init/hw/init.qcom.test.rc
 import /vendor/etc/init/hw/init.target.rc
 import /vendor/etc/init/hw/init.qcom.factory.rc
 
@@ -411,19 +408,6 @@ on post-fs-data
     #Create dir for TUI
     mkdir /data/vendor/tui 0700 system drmrpc
 
-service nqnfcinfo /system/vendor/bin/nqnfcinfo
-    class late_start
-    group nfc
-    user system
-    oneshot
-
-service iop /system/vendor/bin/iop
-    class main
-    user root
-    group root
-    disabled
-    socket iop seqpacket 0666 root system
-
 service qcomsysd /system/vendor/bin/qcom-system-daemon
     class main
     user root
@@ -633,19 +617,6 @@ service iprenew_wigig0 /system/bin/dhcpcd -n
     disabled
     oneshot
 
-service ptt_socket_app /system/vendor/bin/ptt_socket_app -d
-    class main
-    user wifi
-    group wifi system inet net_admin
-    capabilities NET_ADMIN
-    oneshot
-
-service ptt_ffbm /system/vendor/bin/ptt_socket_app -f -d
-    user root
-    group root
-    disabled
-    oneshot
-
 service wifi_ftmd /system/vendor/bin/wifi_ftmd
     user system
     group system inet net_admin
@@ -677,6 +648,7 @@ service iprenew_bt-pan /system/bin/dhcpcd -n
     oneshot
 
 service ssgqmigd /vendor/bin/ssgqmigd
+    disabled
     class late_start
     user radio
     group radio gps system
@@ -736,24 +708,6 @@ on property:sys.boot_completed=1
 
 on property:ro.vendor.ril.mbn_copy_completed=1
     write /data/vendor/radio/copy_complete 1
-
-service qvop-daemon /vendor/bin/qvop-daemon
-    class late_start
-    user system
-    group system drmrpc
-
-service vendor.atfwd /vendor/bin/ATFWD-daemon
-    class late_start
-    user system
-    group system radio
-
-service hostapd_fst /vendor/bin/hw/hostapd -dd -g /data/vendor/wifi/hostapd/global
-    class main
-    capabilities NET_ADMIN NET_RAW
-    user wifi
-    group wifi
-    disabled
-    oneshot
 
 service battery_monitor /system/bin/battery_monitor
     user system
@@ -873,47 +827,6 @@ service vendor.LKCore-rel /vendor/bin/LKCore
     user system
     group system log diag
 
-service qseeproxydaemon /system/vendor/bin/qseeproxydaemon
-    class late_start
-    user system
-    group system
-
-service esepmdaemon /system/vendor/bin/esepmdaemon
-    class core
-    user system
-    group nfc
-
-on charger
-    setprop persist.sys.usb.config mass_storage
-    start qcom-post-boot
-
-#add poweroffhandler
-service poweroffhandler /system/vendor/bin/poweroffhandler
-    class core
-    user media
-    group graphics audio
-    disabled
-    oneshot
-
-service time_daemon /vendor/bin/time_daemon
-    class main
-    user system
-    group system
-    capabilities SYS_TIME
-
-# Set vendor-ril lib path based on Meta version
-on property:vendor.rild.libpath=*
-    setprop rild.libpath ${vendor.rild.libpath}
-
-on property:ro.vendor.radio.noril=*
-    setprop ro.radio.noril ${ro.vendor.radio.noril}
-
-service vendor.power_off_alarm /vendor/bin/power_off_alarm
-    class core
-    group system
-    disabled
-    oneshot
-
 service vendor.hbtp /vendor/bin/hbtp_daemon
      class main
      user system
@@ -922,6 +835,7 @@ service vendor.hbtp /vendor/bin/hbtp_daemon
      disabled
 
 service chre /vendor/bin/chre
+    disabled
     class late_start
     user system
     group system

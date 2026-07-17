@@ -12,8 +12,6 @@
 #Load WLAN driver
 
 import /vendor/etc/init/hw/init.cust.rc
-#ethan.peng@Connectivity,2020/12/29,close uicc since orange
-import /vendor/etc/init/hw/init.uicc.rc
 
 on property:wlan.driver.status=ok
     start load_wlan_driver
@@ -27,19 +25,6 @@ on charger
     setprop persist.vendor.oem.dump 0
     setprop persist.vendor.oem.ssrdump 0
     start oemlogkit
-
-#@bsp, 2019/08/22 Add dash charging
-service dashd /vendor/bin/dashd
-    class core
-    seclabel u:r:dashd:s0
-    group root system
-
-#bsp, 2020/01/04 Add wireless charge
-service wlchgd /vendor/bin/wlchgd
-    class main
-    disabled
-    seclabel u:r:wlchgd:s0
-    group root system
 
 on fs
     mount ext4 /dev/block/bootdevice/by-name/op1 /mnt/vendor/op1 ro barrier=1 discard context=u:object_r:op1_file:s0
@@ -126,8 +111,6 @@ on fs
     chown system system /proc/wireless/deviated
     chown system system /proc/wireless/quiet_mode
     chown system system /proc/wireless/fast_skin_threld
-
-    chown system system /proc/enhance_dash
 
 # rayboo.lin@bsp, 2020/09/09 add for simCard holder detect
     chmod 0666 /proc/simholder/sim_holder_detect
@@ -218,7 +201,6 @@ on fs
 	chmod 0666 /sys/class/drm/card0-DSI-1/panel_serial_number
 	chmod 0666 /sys/class/drm/card0-DSI-1/cabc
 	chmod 0666 /sys/class/drm/card0-DSI-1/oplus_shutdownflag
-	chmod 0666 /sys/class/drm/card0-DSI-1/oneplus_mode
 	chmod 0666 /sys/class/drm/card0-DSI-1/adaption_mode
 	chmod 0666 /sys/class/drm/card0-DSI-1/notify_fppress
 	chmod 0666 /sys/class/drm/card0-DSI-1/dim_alpha
@@ -286,11 +268,6 @@ on boot
     chmod 0666 /dev/silead_fp
     chown system system /dev/silead_fp
 #endif
-    setprop ro.nfc.port "I2C"
-    chmod 0666 /dev/pn553
-    chown nfc nfc /dev/pn553
-    chmod 0666 /dev/p73
-    chown secure_element secure_element /dev/p73
 #Leo@BSP 2020/04/17 add for qsee_log tz_log
     chmod 0666 /proc/tzdbg/qsee_log
     chmod 0666 /proc/tzdbg/log
@@ -336,14 +313,6 @@ on init
     setprop vendor.boot.verifiedbootstate ${ro.boot.verifiedbootstate}
     setprop vendor.boot.hw_version ${ro.boot.hw_version}
 
-    #@bsp, 2019/08/22 Add dash charging
-    chown system system /dev/dash
-    chmod 0664 /dev/dash
-    #restorecon /dev/dash
-    chown system system /dev/wlchg
-    chmod 0664 /dev/wlchg
-    #restorecon /dev/wlchg
-
 on post-fs
 #ifdef VENDOR_EDIT
 #oscar.wei@SYSTEM, 2019/10/02, [AN-604] opdiagnose porting, create folder and binary file.
@@ -366,13 +335,6 @@ on post-fs
     chown system system /proc/skin_temp_thrd/norchg_thd
     chown system system /proc/skin_temp_thrd/norchg_lcdoff_thd
 #ifdef VENDOR_EDIT
-#brandon.zeng@Conn,2020/05/08. add for nfc pnscr tool
-    chown system system /vendor/bin/nfc_trasmit_start.sh
-    chmod 0777  /vendor/bin/nfc_trasmit_start.sh
-    chown system system /vendor/bin/nfc_trasmit_stop.sh
-    chmod 0777  /vendor/bin/nfc_trasmit_stop.sh
-    chown system system vendor/bin/pnscr
-    chmod 0777  vendor/bin/pnscr
 #endif
 
 #ifdef VENDOR_EDIT
@@ -436,7 +398,6 @@ on post-fs
 on post-fs-data
     mkdir /data/vendor/oemnvitems 0771 radio radio
     #brandon.zeng@Conn,2020/08/11. move data path to post-fs-data
-    mkdir /data/vendor/nfc 0770 nfc nfc
     # Ted.Lin@ASTI 2019/06/12 add for CONFIG_HOUSTON
     chown system system /sys/module/houston/parameters/fps_boost
     chown system system /sys/module/houston/parameters/fps_data_sync
@@ -539,11 +500,6 @@ on post-fs-data
 on property:persist.sys.chgdisabled=1
    write /sys/class/power_supply/battery/call_mode 1
 on property:persist.sys.chgdisabled=0
-   write /sys/class/power_supply/battery/call_mode 0
-
-on property:sys.oneplus.disable_vooc=true
-   write /sys/class/power_supply/battery/call_mode 1
-on property:sys.oneplus.disable_vooc=false
    write /sys/class/power_supply/battery/call_mode 0
 
 # add for SMT test enters WLAN FTM test in non-signaling
@@ -748,31 +704,6 @@ on property:vendor.wlan.write.con_mode=*
    write /sys/module/wlan/parameters/con_mode ${vendor.wlan.write.con_mode}
 
 #ifdef VENDOR_EDIT
-#binson.xu@oneplus.com, 2019/02/17, add for write alikey
-service mvalikey /system/bin/cp -rp /sdcard/.lii   /mnt/vendor/op2/
-    class core
-    user root
-    group root
-    disabled
-    oneshot
-    seclabel u:r:vold:s0
-
-service rmalikey /system/bin/rm -r /mnt/vendor/op2/.lii
-    class core
-    user root
-    group root
-    disabled
-    oneshot
-    seclabel u:r:vold:s0
-
-service chownalikey /system/bin/chown -R system.system  /mnt/vendor/op2/.lii
-    class core
-    user root
-    group root
-    disabled
-    oneshot
-    seclabel u:r:vold:s0
-
 #len.nie@bsp, 2020/11/04. add for dump fingerprint data
 on property:gf.debug.dump_path=*
     mkdir /sdcard/Android/data/gf_file 0755 system ext_data_rw
@@ -795,538 +726,3 @@ on property:persist.sys.memplus.direct_swappiness=*
     write /proc/sys/vm/direct_swappiness ${persist.sys.memplus.direct_swappiness}
 
 #ifdef VENDOR_EDIT
-#brandon.zeng@Conn,2020/05/08. add for nfc pnscr tool
-service nfctransmitstart /vendor/bin/sh /vendor/bin/nfc_trasmit_start.sh
-    class late_start
-    user nfc
-    group nfc
-    disabled
-    oneshot
-
-service nfctransmitstop /vendor/bin/sh /vendor/bin/nfc_trasmit_stop.sh
-    class late_start
-    user nfc
-    group nfc
-    disabled
-    oneshot
-
-on property:vendor.nfc.transmit.start=1
-    start nfctransmitstart
-
-on property:vendor.nfc.transmit.start=0
-    stop nfctransmitstart
-
-on property:vendor.nfc.transmit.stop=1
-    start nfctransmitstop
-
-on property:vendor.nfc.transmit.stop=0
-    stop nfctransmitstop
-#endif
-
-#ifdef VENDOR_EDIT
-on property:sys.usb.config=diag,adb && property:sys.usb.configfs=1
-    start wifitestdiag
-
-service wifitestdiag /vendor/bin/wifi_diag
-    class main
-    user root
-    group root system oem_2901
-    disabled
-    seclabel u:r:ftmdaemon:s0
-#endif
-
-#ifdef VENDOR_EDIT
-service vl53l1_daemon_main /vendor/bin/vl53l1_daemon_main
-    class late_start
-    user system
-    group system
-    socket vl53l1_daemon stream 660 system system
-#endif
-
-#oscar.wei@SYSTEM, 2019/10/02, [AN-604] opdiagnose porting : create opdiagnose service
-service opdiagnose /system_ext/bin/OPDiagnoseservice
-    class core
-    user root
-    group system
-
-service opdiagdatacopy /system_ext/bin/OPDiagdataCopy
-    class core
-    user root
-    group system everybody
-    oneshot
-    disabled
-
-on property:vendor.copy.opdiagnose.data=1
-    start opdiagdatacopy
-
-service copy_qxdm_log /system_ext/bin/OPDiagdataCopy -q ${copy.qxdm.log}
-    class core
-    user root
-    group system everybody
-    oneshot
-    disabled
-#endif
-
-#ifdef VENDOR_EDIT
-#kim@bsp 2019/10/25 add to fix apsd wrong issue when boot with dash connected
-on property:sys.boot_completed=1
-    write /sys/module/smb5_lib/parameters/sys_boot_complete 1
-#@bsp Add OTG switch
-on property:persist.sys.oem.otg_support=true
-    write /sys/class/power_supply/usb/otg_switch 1
-    write /sys/class/oplus_chg/usb/otg_switch 1
-on property:persist.sys.oem.otg_support=false
-    write /sys/class/power_supply/usb/otg_switch 0
-    write /sys/class/oplus_chg/usb/otg_switch 0
-#endif
-
-#ifdef VENDOR_EDIT
-on property:persist.vendor.oem.wechat_cameraon=1
-    write /sys/class/oplus_chg/common/camera_on 1
-on property:persist.vendor.oem.wechat_cameraon=0
-    write /sys/class/oplus_chg/common/camera_on 0
-#endif
-
-on property:vendor.sys.op.game=1
-    write  /proc/sys/kernel/sched_skip_affinity 1
-
-on property:vendor.sys.op.game=0
-    write  /proc/sys/kernel/sched_skip_affinity 0
-
-#ifdef VENDOR_EDIT
-on property:vendor.wlan.sniffer.enabled=1
-    start launch_sniffer
-    setprop vendor.wlan.sniffer.status 1
-
-on property:vendor.wlan.sniffer.enabled=0
-    stop launch_sniffer
-    start terminate_sniffer
-
-service launch_sniffer /vendor/bin/sh /vendor/bin/launch_sniffer.sh ${vendor.wlan.sniffer.iface} ${vendor.wlan.sniffer.channel} ${vendor.wlan.sniffer.bandwidth}
-    class main
-    user root
-    group root
-    disabled
-    oneshot
-
-service terminate_sniffer /vendor/bin/sh /vendor/bin/terminate_sniffer.sh
-    class main
-    user root
-    group root
-    disabled
-    oneshot
-
-#v-krishna.rao@Connectivity, 2020/12/21 , servce to set iwpriv contention for btwifi coex debugging
-on property:persist.vendor.oem.btwificoex.debug=1
-    start startiwprivcontention
-
-on property:persist.vendor.oem.btwificoex.debug=0
-    start stopiwprivcontention
-
-on property:wlan.driver.status=ok && property:persist.vendor.oem.btwificoex.debug=1
-    start startiwprivcontention
-
-service startiwprivcontention /vendor/bin/sh /vendor/bin/startcontention.sh 1
-    class main
-    user root
-    group root
-    disabled
-    oneshot
-
-service stopiwprivcontention /vendor/bin/sh /vendor/bin/startcontention.sh 0
-    class main
-    user root
-    group root
-    disabled
-    oneshot
-
-#endif
-
-#ifdef VENDOR_EDIT
-# TomCheng@Core ,2020/06/22, HDCP provision key feature
-service mvhdcpkey /system/bin/mv /sdcard/hdcpkey /mnt/vendor/op2/hdcpkey
-    class core
-    user root
-    group root
-    disabled
-    oneshot
-    seclabel u:r:vold:s0
-
-service rmhdcpkey /system/bin/rm /mnt/vendor/op2/hdcpkey
-    class core
-    user root
-    group root
-    disabled
-    oneshot
-    seclabel u:r:vold:s0
-
-service chmodhdcpkey /system/bin/chmod 777 /mnt/vendor/op2/hdcpkey
-    class core
-    user root
-    group root
-    disabled
-    oneshot
-    seclabel u:r:vold:s0
-
-service dphdcp2p2prov /vendor/bin/hdcp2p2prov /mnt/vendor/op2/dphdcp2key /mnt/vendor/op2/DPS_hdcp2
-    class core
-    setenv LD_LIBRARY_PATH /vendor/lib64
-    user root
-    group root
-    disabled
-    oneshot
-    seclabel u:r:vendor_init:s0
-
-service verifydphdcp2p2prov /vendor/bin/hdcp2p2prov -verify
-    class core
-    setenv LD_LIBRARY_PATH /vendor/lib64
-    user root
-    group root
-    disabled
-    oneshot
-    seclabel u:r:vendor_init:s0
-
-service mvdphdcp2key /system/bin/mv /sdcard/dphdcp2key /mnt/vendor/op2/dphdcp2key
-    class core
-    user root
-    group root
-    disabled
-    oneshot
-    seclabel u:r:vold:s0
-
-service rmdphdcp2key /system/bin/rm /mnt/vendor/op2/dphdcp2key
-    class core
-    user root
-    group root
-    disabled
-    oneshot
-    seclabel u:r:vold:s0
-
-service mvdpshdcp2 /system/bin/mv /sdcard/DPS_hdcp2 /mnt/vendor/op2/DPS_hdcp2
-    class core
-    user root
-    group root
-    disabled
-    oneshot
-    seclabel u:r:vold:s0
-
-service rmdpshdcp2 /system/bin/rm /mnt/vendor/op2/DPS_hdcp2
-    class core
-    user root
-    group root
-    disabled
-    oneshot
-    seclabel u:r:vold:s0
-#endif
-
-on property:vendor.sys.op.disable_ufstw=1
-    write /sys/devices/platform/soc/1d84000.ufshc/ufstw_lu0/tw_enable 0
-
-on property:vendor.sys.op.disable_ufstw=0
-    write /sys/devices/platform/soc/1d84000.ufshc/ufstw_lu0/tw_enable 1
-
-service filebuilderd /system_ext/bin/filebuilderd
-    class core
-    user root
-    group root system
-    disabled
-    oneshot
-    seclabel u:r:vold:s0
-
-on property:sys.boot_completed=1 && property:persist.sys.ufs_hpb_disable=1
-    write /sys/devices/platform/soc/1d84000.ufshc/ufshpb_lu0/release 171
-
-on property:sys.boot_completed=1
-    write /sys/devices/platform/soc/1d84000.ufshc/ufstw_lu0/tw_enable 1
-    write /sys/devices/platform/soc/1d84000.ufshc/ufstw_lu0/flush_enable 1
-    write /sys/devices/platform/soc/1d84000.ufshc/ufstw_lu0/flush_during_hibern_enter 1
-
-# ifdef VENDOR_EDIT
-# narci.gu@SYSTEM, 2018/7/23, [AN-709] Add for keymaster key
-service KmInstallKeybox19805 /vendor/bin/KmInstallKeybox /mnt/vendor/op2/.lii/keyboxes_ciphered.xml OnePlus8T_Key_Attest_0 true
-    class core
-    setenv LD_LIBRARY_PATH /vendor/lib64/hw
-    user system
-    group root
-    disabled
-    oneshot
-    seclabel u:r:keybox_oem:s0
-
-service KmInstallKeybox20809 /vendor/bin/KmInstallKeybox /mnt/vendor/op2/.lii/keyboxes_ciphered.xml OnePlus8TTMO_Key_Attest_0 true
-    class core
-    setenv LD_LIBRARY_PATH /vendor/lib64/hw
-    user system
-    group root
-    disabled
-    oneshot
-    seclabel u:r:keybox_oem:s0
-
-# ifdef VENDOR_EDIT
-# yanamadala.ragini@SYSTEM, 2018/7/23, [AVICII-2558] Add for keymaster key
-service KmInstallKeybox20801 /vendor/bin/KmInstallKeybox /mnt/vendor/op2/.lii/keyboxes_ciphered.xml Nord_Key_Attest_00 true
-    class core
-    setenv LD_LIBRARY_PATH /vendor/lib64/hw
-    user system
-    group root
-    disabled
-    oneshot
-    seclabel u:r:keybox_oem:s0
-
-# yanamadala.ragini@SYSTEM, 2020/11/30, [AN-977] Add for keymaster key
-service KmInstallKeybox20828 /vendor/bin/KmInstallKeybox /mnt/vendor/op2/.lii/keyboxes_ciphered.xml OnePlus9R_Key_Attest_0 true
-    class core
-    setenv LD_LIBRARY_PATH /vendor/lib64/hw
-    user system
-    group root
-    disabled
-    oneshot
-    seclabel u:r:keybox_oem:s0
-# endif
-
-# v-huanouyang@SYSTEM, 2020/10/22 [TFS-20170] Update Google key box for check on Lemonadev
-service KmInstallKeyboxLemonadev /vendor/bin/KmInstallKeybox /mnt/vendor/op2/.lii/keyboxes_ciphered.xml OnePlus9VZW_Key_Attest_0 true
-    class core
-    setenv LD_LIBRARY_PATH /vendor/lib64/hw
-    user system
-    group root
-    disabled
-    oneshot
-    seclabel u:r:keybox_oem:s0
-
-# v-huanouyang@SYSTEM, 2020/10/22 [TFS-20170] Update Google key box for check on Lemonadet
-service KmInstallKeyboxLemonadet /vendor/bin/KmInstallKeybox /mnt/vendor/op2/.lii/keyboxes_ciphered.xml OnePlus9TMO_Key_Attest_0 true
-    class core
-    setenv LD_LIBRARY_PATH /vendor/lib64/hw
-    user system
-    group root
-    disabled
-    oneshot
-    seclabel u:r:keybox_oem:s0
-
-# v-huanouyang@SYSTEM, 2020/10/22 [TFS-20170] Update Google key box for check on Lemonade
-service KmInstallKeyboxLemonade /vendor/bin/KmInstallKeybox /mnt/vendor/op2/.lii/keyboxes_ciphered.xml OnePlus9_Key_Attest_0 true
-    class core
-    setenv LD_LIBRARY_PATH /vendor/lib64/hw
-    user system
-    group root
-    disabled
-    oneshot
-    seclabel u:r:keybox_oem:s0
-
-# v-huanouyang@SYSTEM, 2020/10/22 [TFS-20170] Update Google key box for check on Lemonadep
-service KmInstallKeyboxLemonadep /vendor/bin/KmInstallKeybox /mnt/vendor/op2/.lii/keyboxes_ciphered.xml OnePlus9Pro_Key_Attest_0 true
-    class core
-    setenv LD_LIBRARY_PATH /vendor/lib64/hw
-    user system
-    group root
-    disabled
-    oneshot
-    seclabel u:r:keybox_oem:s0
-
-# v-huanouyang@SYSTEM, 2020/10/22 [TFS-20170] Update Google key box for check on Lemonadept
-service KmInstallKeyboxLemonadept /vendor/bin/KmInstallKeybox /mnt/vendor/op2/.lii/keyboxes_ciphered.xml OnePlus9ProTMO_Key_Attest_0 true
-    class core
-    setenv LD_LIBRARY_PATH /vendor/lib64/hw
-    user system
-    group root
-    disabled
-    oneshot
-    seclabel u:r:keybox_oem:s0
-
-# braden.liu@SYSTEM, 2021/01/05 Update Google key box for check on Dre
-service KmInstallKeyboxDre8t /vendor/bin/KmInstallKeybox /mnt/vendor/op2/.lii/keyboxes_ciphered.xml OnePlusN200TMO_Key_Attest_0 true
-    class core
-    setenv LD_LIBRARY_PATH /vendor/lib64/hw
-    user system
-    group root
-    disabled
-    oneshot
-    seclabel u:r:keybox_oem:s0
-
-# braden.liu@SYSTEM, 2021/01/05 Update Google key box for check on Dre
-service KmInstallKeyboxDre8m /vendor/bin/KmInstallKeybox /mnt/vendor/op2/.lii/keyboxes_ciphered.xml OnePlusN200METRO_Key_Attest_0 true
-    class core
-    setenv LD_LIBRARY_PATH /vendor/lib64/hw
-    user system
-    group root
-    disabled
-    oneshot
-    seclabel u:r:keybox_oem:s0
-
-# braden.liu@SYSTEM, 2021/01/05 Update Google key box for check on Dre
-service KmInstallKeyboxDre9 /vendor/bin/KmInstallKeybox /mnt/vendor/op2/.lii/keyboxes_ciphered.xml OnePlusN200_Key_Attest_0 true
-    class core
-    setenv LD_LIBRARY_PATH /vendor/lib64/hw
-    user system
-    group root
-    disabled
-    oneshot
-    seclabel u:r:keybox_oem:s0
-
-# dongbin@WT_ODM_SYSTEM, 2021/01/27 Update Google key box for check on ebba
-service KmInstallKeybox20813 /vendor/bin/KmInstallKeybox /mnt/vendor/op2/.lii/keyboxes_ciphered.xml OnePlusNordCE_Key_Attest_00 true
-    class core
-    setenv LD_LIBRARY_PATH /vendor/lib64/hw
-    user system
-    group root
-    disabled
-    oneshot
-    seclabel u:r:keybox_oem:s0
-
-# Jab.zhou@SYSTEM, 2020/07/15, Add for keymaster key
-service KmInstallKeybox20886 /vendor/bin/KmInstallKeybox /mnt/vendor/op2/.lii/keyboxes_ciphered.xml OnePlusN10_Key_Attest_00 true
-    class core
-    setenv LD_LIBRARY_PATH /vendor/lib64/hw
-    user system
-    group root
-    disabled
-    oneshot
-    seclabel u:r:keybox_oem:s0
-
-service KmInstallKeybox20888 /vendor/bin/KmInstallKeybox /mnt/vendor/op2/.lii/keyboxes_ciphered.xml OnePlusN10TMO_Key_Attest_00 true
-    class core
-    setenv LD_LIBRARY_PATH /vendor/lib64/hw
-    user system
-    group root
-    disabled
-    oneshot
-    seclabel u:r:keybox_oem:s0
-
-service KmInstallKeybox20885 /vendor/bin/KmInstallKeybox /mnt/vendor/op2/.lii/keyboxes_ciphered.xml OnePlusN10METRO_Key_Attest_00 true
-    class core
-    setenv LD_LIBRARY_PATH /vendor/lib64/hw
-    user system
-    group root
-    disabled
-    oneshot
-    seclabel u:r:keybox_oem:s0
-
-service KmInstallKeybox20889 /vendor/bin/KmInstallKeybox /mnt/vendor/op2/.lii/keyboxes_ciphered.xml OnePlusN10_Key_Attest_00 true
-    class core
-    setenv LD_LIBRARY_PATH /vendor/lib64/hw
-    user system
-    group root
-    disabled
-    oneshot
-    seclabel u:r:keybox_oem:s0
-
-# Jason.An@SYSTEM, 2021/04/23, Add for write Google Key for 4250R
-service KmInstallKeybox20881 /vendor/bin/KmInstallKeybox /mnt/vendor/op2/.lii/keyboxes_ciphered.xml OnePlusN100_Key_Attest_00 true
-    class core
-    setenv LD_LIBRARY_PATH /vendor/lib64/hw
-    user system
-    group root
-    disabled
-    oneshot
-    seclabel u:r:keybox_oem:s0
-
-service KmInstallKeybox20882 /vendor/bin/KmInstallKeybox /mnt/vendor/op2/.lii/keyboxes_ciphered.xml OnePlusN100TMO_Key_Attest_00 true
-    class core
-    setenv LD_LIBRARY_PATH /vendor/lib64/hw
-    user system
-    group root
-    disabled
-    oneshot
-    seclabel u:r:keybox_oem:s0
-
-service KmInstallKeybox20880 /vendor/bin/KmInstallKeybox /mnt/vendor/op2/.lii/keyboxes_ciphered.xml OnePlusN100METRO_Key_Attest_00 true
-    class core
-    setenv LD_LIBRARY_PATH /vendor/lib64/hw
-    user system
-    group root
-    disabled
-    oneshot
-    seclabel u:r:keybox_oem:s0
-
-service KmInstallKeybox20883 /vendor/bin/KmInstallKeybox /mnt/vendor/op2/.lii/keyboxes_ciphered.xml OnePlusN100_Key_Attest_00 true
-    class core
-    setenv LD_LIBRARY_PATH /vendor/lib64/hw
-    user system
-    group root
-    disabled
-    oneshot
-    seclabel u:r:keybox_oem:s0
-
-#ifdef VENDOR_EDIT
-#kilaru.raaman@SYSTEM, 2021/04/29, Add for Google Keybox in SDM845.
-service KmInstallKeybox /vendor/bin/KmInstallKeybox /mnt/vendor/op2/.lii/keyboxes_ciphered.xml OnePlus6_Key_Attestation_0000000 true
-    class core
-    setenv LD_LIBRARY_PATH /vendor/lib64/hw
-    user system
-    group root
-    disabled
-    oneshot
-    seclabel u:r:keybox_oem:s0
-
-service KmInstallKeybox1 /vendor/bin/KmInstallKeybox /mnt/vendor/op2/.lii/keyboxes_ciphered.xml OnePlus6T_Key_Attestation_00 true
-    class core
-    setenv LD_LIBRARY_PATH /vendor/lib64/hw
-    user system
-    group root
-    disabled
-    oneshot
-    seclabel u:r:keybox_oem:s0
-
-service KmInstallKeybox2 /vendor/bin/KmInstallKeybox /mnt/vendor/op2/.lii/keyboxes_ciphered.xml OnePlus6TS_Key_Attestation_00 true
-    class core
-    setenv LD_LIBRARY_PATH /vendor/lib64
-    user system
-    group root
-    disabled
-    oneshot
-    seclabel u:r:keybox_oem:s0
-
-#endif
-
-service keyboxxml /system/bin/mv /sdcard/.lii /mnt/vendor/op2/
-    class core
-    user root
-    group root
-    disabled
-    oneshot
-    seclabel u:r:vold:s0
-
-service rmkeyboxxml /system/bin/rm -rf /mnt/vendor/op2/.lii
-    class core
-    user root
-    group root
-    disabled
-    oneshot
-    seclabel u:r:vold:s0
-
-service chmodkeyboxxmldir /system/bin/chmod 777 -R /mnt/vendor/op2/.lii
-    class core
-    user root
-    group root
-    disabled
-    oneshot
-    seclabel u:r:vold:s0
-# endif
-
-#alden.zhang@OPTI, 2020/7/18. [OSP-8064], add for IOLIMIT
-on property:persist.sys.iolimiter.enable=true
-    write /proc/iolimit_enable 1
-    write /sys/module/oneplus_healthinfo/parameters/ohm_action_ctrl Y
-    chown system system /sys/module/oneplus_healthinfo
-    chown system system /sys/module/oneplus_healthinfo/parameters
-    chown system system /sys/module/oneplus_healthinfo/parameters/ohm_iowait_h_ms
-    chown system system /sys/module/oneplus_healthinfo/parameters/ohm_iowait_l_ms
-    chown system system /sys/module/oneplus_healthinfo/parameters/ohm_read_thresh
-    chown system system /sys/module/oneplus_healthinfo/parameters/ohm_write_thresh
-    chown system system /sys/module/oneplus_healthinfo/parameters/ohm_sample_time
-    chown system system /sys/module/oneplus_healthinfo/parameters/ohm_action_ctrl
-    chown system system /proc/iolimit_enable
-
-#huangwen.chen#OPTI, 2020/9/16, [OPTI-43], add for zram writeback
-on property:persist.vendor.oem.dump=0
-    setprop persist.vendor.zwriteback.backup 0
-
-on property:persist.vendor.oem.dump=1
-    setprop persist.vendor.zwriteback.backup 1
-
-#ifdef ODM_WT_EDIT Kai.Cao@ODM_WT.NW.SIM,BILLIE8-6704, 2020/07/13,Support single and dual card solutions
-on property:ro.boot.rf_version=0 && property:ro.boot.project_codename=billie8
-    setprop persist.radio.multisim.config "ssss"
-on property:ro.boot.rf_version=0 && property:ro.boot.project_codename=billie8t
-    setprop persist.radio.multisim.config "ssss"
-#endif

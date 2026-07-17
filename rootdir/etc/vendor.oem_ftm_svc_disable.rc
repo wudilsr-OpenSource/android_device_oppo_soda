@@ -71,10 +71,6 @@ service oemasserttip /system/bin/xxx
      user system
      disabled
 
-service vendor.oneplus.cwb-1-0 /vendor/bin/hw/xxx
-    oneshot
-    disabled
-
 service vendor.qti.hardware.display.composer /vendor/bin/hw/xxx
     oneshot
     disabled

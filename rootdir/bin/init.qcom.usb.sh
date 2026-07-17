@@ -147,7 +147,7 @@ if [ -d /config/usb_gadget ]; then
 #Fix product name for Android Auto/Ubuntu
 	product_string=`getprop ro.product.model`
         if [ "$product_string" == "" ]; then
-	        product_string="OnePlus"
+	        product_string="OPPO"
         fi
 #else
 	#product_string="$machine_type-$soc_hwplatform _SN:$msm_serial_hex"
