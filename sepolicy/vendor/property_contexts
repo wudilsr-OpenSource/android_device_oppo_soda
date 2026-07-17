@@ -12,8 +12,8 @@ persist.vendor.oem.wifi.copytosd          u:object_r:vendor_oem_wifi_prop:s0
 persist.vendor.oem.wifi.debug             u:object_r:vendor_oem_wifi_prop:s0
 persist.vendor.oem.wifi.logpath           u:object_r:vendor_oem_wifi_prop:s0
 persist.vendor.oem.wifi.txenable          u:object_r:vendor_oem_wifi_prop:s0
-persist.vendor.oneplus.bt                 u:object_r:vendor_oem_bluetooth_prop:s0
-persist.vendor.oneplus.bttestmode         u:object_r:vendor_oem_bluetooth_prop:s0
+persist.vendor.oplus.bt                   u:object_r:vendor_oem_bluetooth_prop:s0
+persist.vendor.oplus.bttestmode           u:object_r:vendor_oem_bluetooth_prop:s0
 persist.vendor.sdx50m.online              u:object_r:vendor_usb_prop:s0
 persist.vendor.service.bdroid.snooplog    u:object_r:vendor_bluetooth_prop:s0
 persist.vendor.service.bdroid.soclog      u:object_r:vendor_bluetooth_prop:s0

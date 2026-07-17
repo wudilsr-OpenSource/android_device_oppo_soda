@@ -8,8 +8,8 @@
 
 set -e
 
-DEVICE=billie2
-VENDOR=oneplus
+DEVICE=soda
+VENDOR=oppo
 
 # Load extract_utils and do some sanity checks
 MY_DIR="${BASH_SOURCE%/*}"
@@ -63,7 +63,7 @@ function blob_fixup() {
             sed -i "s/com.oem.autotest/\x00om.oem.autotest/" "${2}"
             ;;
         vendor/lib64/vendor.qti.hardware.camera.postproc@1.0-service-impl.so)
-            "${SIGSCAN}" -p "27 0B 00 94" -P "1F 20 03 D5" -f "${2}"
+            "${SIGSCAN}" -p "13 0A 00 94" -P "1F 20 03 D5" -f "${2}"
             ;;
         system_ext/lib64/lib-imsvideocodec.so)
             grep -q libgui_shim.so "${2}" || "${PATCHELF}" --add-needed libgui_shim.so "${2}"
