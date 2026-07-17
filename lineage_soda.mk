@@ -18,23 +18,23 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
-# Inherit from billie2 device
-$(call inherit-product, device/oneplus/billie2/device.mk)
+# Inherit from soda device
+$(call inherit-product, device/oppo/soda/device.mk)
 
 # Inherit some common Lineage stuff.
 $(call inherit-product, vendor/lineage/config/common_full_phone.mk)
 
-PRODUCT_NAME := lineage_billie2
-PRODUCT_DEVICE := billie2
-PRODUCT_MANUFACTURER := OnePlus
-PRODUCT_BRAND := OnePlus
-PRODUCT_MODEL := BE2011
+PRODUCT_NAME := lineage_soda
+PRODUCT_DEVICE := soda
+PRODUCT_MANUFACTURER := OPPO
+PRODUCT_BRAND := OPPO
+PRODUCT_MODEL := PDVM00
 
-PRODUCT_GMS_CLIENTID_BASE := android-oneplus
+PRODUCT_GMS_CLIENTID_BASE := android-oppo
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
-    PRIVATE_BUILD_DESC="OnePlusN100-user 11   release-keys" \
-    TARGET_DEVICE=OnePlusN100 \
-    TARGET_PRODUCT=OnePlusN100
+    PRIVATE_BUILD_DESC="PDVM00-user 11 release-keys" \
+    TARGET_DEVICE="OPPO A32" \
+    TARGET_PRODUCT="OPPO A32"
 
-BUILD_FINGERPRINT := OnePlus/OnePlusN100/OnePlusN100:11/RKQ1.201217.002/2310091801:user/release-keys
+BUILD_FINGERPRINT := OPPO/PDVM00/OP4E35:11/RKQ1.201217.002/1716954220938:user/release-keys

@@ -111,8 +111,6 @@ bluetooth.profile.sap.server.enabled?=true
 persist.bluetooth.a2dp_offload.disabled=false
 persist.vendor.bt.a2dp_offload_cap=sbc-aptx-aptxtws-aptxhd-aac-ldac
 persist.vendor.bt.aac_frm_ctl.enabled=true
-persist.vendor.oneplus.bt.asd.chain=0
-persist.vendor.oneplus.bt.asd.firmware=false
 persist.vendor.qcom.bluetooth.a2dp_mcast_test.enabled=false
 persist.vendor.qcom.bluetooth.a2dp_offload_cap=sbc-aptx-aptxtws-aptxhd-aac-ldac
 persist.vendor.qcom.bluetooth.aac_vbr_ctl.enabled=true
@@ -124,10 +122,10 @@ ro.bluetooth.a2dp_offload.supported=true
 ro.vendor.bluetooth.wipower=false
 
 # Camera
-persist.vendor.camera.privapp.list=com.oneplus.camera,com.oem.autotest,com.oneplus.factorymode
+persist.vendor.camera.privapp.list=com.oppo.camera
 vendor.arcsoft.sn_isHardCopy=0
 vendor.camera.algo.jpeghwencode=1
-vendor.camera.aux.packagelist=com.oem.autotest,com.oneplus.factorymode,com.oneplus.camera,com.oneplus.healthcheck
+vendor.camera.aux.packagelist=com.oem.autotest,com.oppo.factorymode,com.oppo.camera
 
 # Chipset
 ro.soc.manufacturer=Qualcomm
@@ -159,7 +157,8 @@ drm.service.enabled=true
 persist.vendor.qfp=true
 
 # FRP
-ro.frp.pst=/dev/block/bootdevice/by-name/config
+# FRP
+ro.frp.pst=/dev/block/bootdevice/by-name/frp
 
 # Gatekeeper
 vendor.gatekeeper.disable_spu=true

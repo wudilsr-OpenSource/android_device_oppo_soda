@@ -15,9 +15,9 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/lineage_billie2.mk
+    $(LOCAL_DIR)/lineage_soda.mk
 
 COMMON_LUNCH_CHOICES := \
-    lineage_billie2-user \
-    lineage_billie2-userdebug \
-    lineage_billie2-eng
+    lineage_soda-user \
+    lineage_soda-userdebug \
+    lineage_soda-eng

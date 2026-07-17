@@ -1,2 +1,5 @@
 # Audio
 ro.vendor.qti.va_odm.support=1
+
+# Camera
+ro.oplus.system.camera.name=com.oppo.camera
