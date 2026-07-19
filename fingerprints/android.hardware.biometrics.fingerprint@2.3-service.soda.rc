@@ -1,0 +1,7 @@
+service vendor.fps_hal.soda /vendor/bin/hw/android.hardware.biometrics.fingerprint@2.3-service.soda
+    class late_start
+    user system
+    group system input uhid
+    interface android.hardware.biometrics.fingerprint@2.1::IBiometricsFingerprint default
+    interface android.hardware.biometrics.fingerprint@2.2::IBiometricsFingerprint default
+    interface android.hardware.biometrics.fingerprint@2.3::IBiometricsFingerprint default

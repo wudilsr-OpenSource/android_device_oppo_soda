@@ -32,9 +32,10 @@
 /dev/skin_thermal         u:object_r:therm_device:s0
 
 # HALs
-/(vendor|system/vendor)/bin/hw/vendor\.oplus\.hardware\.biometrics\.fingerprint@2\.1-service                u:object_r:hal_fingerprint_default_exec:s0
+/(vendor|system/vendor|odm)/bin/hw/vendor\.oplus\.hardware\.biometrics\.fingerprint@2\.1-service             u:object_r:hal_fingerprint_default_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.biometrics\.fingerprint@2\.3-service\.soda                u:object_r:hal_fingerprint_default_exec:s0
 /(vendor|system/vendor)/bin/hw/vendor\.oplus\.hardware\.biometrics\.face@1\.0-service                       u:object_r:hal_face_default_exec:s0
-/(vendor|system/vendor)/bin/hw/vendor\.oplus\.hardware\.biometrics\.fingerprintpay@1\.0-service             u:object_r:hal_fingerprint_default_exec:s0
+/(vendor|system/vendor|odm)/bin/hw/vendor\.oplus\.hardware\.biometrics\.fingerprintpay@1\.0-service          u:object_r:hal_fingerprint_default_exec:s0
 
 # OP1, OP2 files
 /mnt/vendor/op1(/.*)?    u:object_r:op1_file:s0
