@@ -50,20 +50,15 @@ on early-fs
 
 on fs
     start hwservicemanager
-    mkdir /mnt/vendor/op2 0660 system system
     mount_all --early
     chown root system /mnt/vendor/persist
     chmod 0771 /mnt/vendor/persist
     restorecon_recursive /mnt/vendor/persist
     mkdir /mnt/vendor/persist/data 0700 system system
-    wait /mnt/vendor/op2
-    chown system system /mnt/vendor/op2
-    mkdir /mnt/vendor/op2/rbr_log 0770 system system
 
 on post-fs
     # set RLIMIT_MEMLOCK to 64MB
     setrlimit 8 67108864 67108864
-    mkdir /mnt/vendor/op2/recovery 0770 root system
 
 on late-fs
     wait_for_prop hwservicemanager.ready true
@@ -78,6 +73,9 @@ on early-boot
     start vendor.sensors
 
 on boot
+    # loc_launcher crashes on PDVM00 — keep stopped
+    stop loc_launcher
+
 #USB controller configuration
     setprop vendor.usb.rndis.func.name "gsi"
     setprop vendor.usb.rmnet.func.name "gsi"
