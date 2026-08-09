@@ -3,3 +3,6 @@ allow init sysfs_ufs_discard:file { open write getattr };
 
 # init mounts opporeserve2 partition
 allow init oppo_reserve_file:filesystem { mount relabelfrom relabelto };
+
+# init probes display device links under sysfs
+allow init vendor_sysfs_graphics:lnk_file r_file_perms;

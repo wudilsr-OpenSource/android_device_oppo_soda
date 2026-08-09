@@ -1,0 +1,4 @@
+# fsck checks the opporeserve2 partition mounted at /mnt/vendor/opporeserve
+# (fstab wait,check); platform fsck.te only grants metadata_block_device
+allow fsck vendor_rmt_storage_block_dev:blk_file rw_file_perms;
+allow fsck self:capability kill;

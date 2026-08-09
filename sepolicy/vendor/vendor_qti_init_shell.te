@@ -1,4 +1,5 @@
 allow vendor_qti_init_shell proc_modules:file r_file_perms;
+allow vendor_qti_init_shell silead_fpd_device:chr_file getattr;
 
 allow vendor_qti_init_shell sysfs:file write;
 
