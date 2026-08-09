@@ -1,0 +1,2 @@
+# installd queries quota on the opporeserve filesystem
+allow installd oppo_reserve_file:filesystem quotaget;
