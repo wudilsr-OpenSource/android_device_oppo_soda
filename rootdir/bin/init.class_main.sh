@@ -36,15 +36,6 @@ datamode=`getprop persist.vendor.data.mode`
 low_ram=`getprop ro.config.low_ram`
 qcrild_status=true
 
-#
-# ifdef VENDOR_EDIT
-# add for dual sim card config
-# soda (PDVM00) is a dual-SIM device. Force dsds: the custom kernel
-# does not expose the stock printk dual_sim parameter.
-setprop ro.vendor.radio.multisim.config dsds
-##endif
-#
-
 
 case "$baseband" in
     "apq" | "sda" | "qcs" )
