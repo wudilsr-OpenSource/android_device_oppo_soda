@@ -76,6 +76,13 @@ on boot
     # loc_launcher crashes on PDVM00 — keep stopped
     stop loc_launcher
 
+    # Enable AW87339 smart amps (no factory HAL to do this on custom ROMs)
+    wait /sys/bus/i2c/devices/0-0058/hwen
+    write /sys/bus/i2c/devices/0-0058/hwen 1
+    write /sys/bus/i2c/devices/0-0058/mode 1
+    write /sys/bus/i2c/devices/0-0059/hwen 1
+    write /sys/bus/i2c/devices/0-0059/mode 1
+
 #USB controller configuration
     setprop vendor.usb.rndis.func.name "gsi"
     setprop vendor.usb.rmnet.func.name "gsi"

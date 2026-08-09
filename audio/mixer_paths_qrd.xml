@@ -148,9 +148,10 @@
     <ctl name="VI_FEED_TX Channels" value="One" />
     <ctl name="WSA_AIF_VI Mixer WSA_SPKR_VI_1" value="0" />
     <ctl name="WSA_AIF_VI Mixer WSA_SPKR_VI_2" value="0" />
-    <ctl name="RX_CDC_DMA_RX_1 Format" value="S16_LE" />
-    <ctl name="RX_CDC_DMA_RX_0 Format" value="S16_LE" />
-    <ctl name="TX_CDC_DMA_TX_3 Format" value="S16_LE" />
+    <ctl name="RX_CDC_DMA_RX_1 Format" value="UNPACKED" />
+    <ctl name="WSA_CDC_DMA_TX_0 Format" value="UNPACKED" />
+    <ctl name="RX_CDC_DMA_RX_0 Format" value="UNPACKED" />
+    <ctl name="TX_CDC_DMA_TX_3 Format" value="UNPACKED" />
     <!-- HFP start -->
     <ctl name="HFP_SLIM7_UL_HL Switch" value="0" />
     <ctl name="RX_CDC_DMA_RX_1 Port Mixer SLIM_7_TX" value="0" />
@@ -200,6 +201,10 @@
     <ctl name="VoiceMMode1_Tx Mixer USB_AUDIO_TX_MMode1" value="0" />
     <!-- Multimode Voice1 Display-Port -->
     <ctl name="DISPLAY_PORT_RX_Voice Mixer VoiceMMode1" value="0" />
+    <!-- Multimode Voice1 proxy-Port -->
+    <ctl name="PROXY_RX_Voice Mixer VoiceMMode1" value="0" />
+    <ctl name="VoiceMMode1_Tx Mixer PROXY_TX_MMode1" value="0" />
+
     <!-- Miltimode Voice1 end-->
 
     <!-- Multimode Voice2 -->
@@ -217,6 +222,9 @@
     <ctl name="VoiceMMode2_Tx Mixer USB_AUDIO_TX_MMode2" value="0" />
     <!-- Multimode Voice2 Display-Port -->
     <ctl name="DISPLAY_PORT_RX_Voice Mixer VoiceMMode2" value="0" />
+    <!-- Multimode Voice2 proxy-Port -->
+    <ctl name="PROXY_RX_Voice Mixer VoiceMMode2" value="0" />
+    <ctl name="VoiceMMode2_Tx Mixer PROXY_TX_MMode2" value="0" />
     <!-- Multimode Voice2 end-->
 
     <!-- Voice external ec. reference -->
@@ -316,6 +324,7 @@
     <ctl name="DEC0_BCS Switch" value="0" />
     <ctl name="MultiMedia1 Mixer TX_CDC_DMA_TX_3" value="0" />
     <ctl name="ADC2_MIXER Switch" value="0" />
+    <ctl name="ADC2 MUX" value="ZERO" />
     <ctl name="TX_AIF1_CAP Mixer DEC0" value="0" />
     <ctl name="TX_AIF1_CAP Mixer DEC1" value="0" />
     <ctl name="TX_AIF1_CAP Mixer DEC2" value="0" />
@@ -424,13 +433,6 @@
     <ctl name="MultiMedia16 Mixer SLIM_8_TX" value="0" />
     <ctl name="MultiMedia16 Mixer USB_AUDIO_TX" value="0" />
 
-    <!-- These are the initial mixer settings -->
-    <ctl name="Ext_Speaker_Amp_spkmode" value="Off" />
-    <ctl name="Ext_Receiver_Amp_spkmode" value="Off" />
-    <ctl name="Ext_Receiver_Amp_rcvmode" value="Off" />
-    <ctl name="SpkrMonoL Sia81xx Power" value="Off" />
-    <ctl name="SpkrMonoR Sia81xx Power" value="Off" />
-
     <!-- These are audio route (FE to BE) specific mixer settings -->
     <path name="gsm-mode">
         <ctl name="RX_GSM mode Enable" value="ON" />
@@ -438,7 +440,7 @@
 
     <path name="echo-reference">
         <ctl name="AUDIO_REF_EC_UL1 MUX" value="RX_CDC_DMA_RX_0" />
-        <ctl name="EC Reference Channels" value="Two"/>
+        <ctl name="EC Reference Channels" value="One"/>
     </path>
 
     <path name="echo-reference handset">
@@ -476,7 +478,7 @@
 
     <path name="echo-reference-voip">
         <ctl name="AUDIO_REF_EC_UL10 MUX" value="RX_CDC_DMA_RX_0" />
-        <ctl name="EC Reference Channels" value="Two"/>
+        <ctl name="EC Reference Channels" value="One"/>
     </path>
 
     <path name="echo-reference-voip handset">
@@ -505,13 +507,6 @@
     <path name="deep-buffer-playback">
         <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia1" value="1" />
     </path>
-
-    <!-- #if OP_FEATURE_MM_CLOSE_PA == 1 -->
-    <!-- rich.yu@MM.Audio, 2021/04/09, porting new close PA for N100_R -->
-    <path name="deep-buffer-playback dummy">
-        <ctl name="AFE_PCM_RX Audio Mixer MultiMedia1" value="1" />
-    </path>
-    <!-- #endif /* OP_FEATURE_MM_CLOSE_PA */ -->
 
     <path name="deep-buffer-playback handset">
         <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia1" value="1" />
@@ -626,13 +621,6 @@
         <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia5" value="1" />
     </path>
 
-    <!-- #if OP_FEATURE_MM_CLOSE_PA == 1 -->
-    <!-- rich.yu@MM.Audio, 2021/04/09, porting new close PA for N100_R -->
-    <path name="low-latency-playback dummy">
-        <ctl name="AFE_PCM_RX Audio Mixer MultiMedia5" value="1" />
-    </path>
-    <!-- #endif /* OP_FEATURE_MM_CLOSE_PA */ -->
-
     <path name="low-latency-playback handset">
         <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia5" value="1" />
     </path>
@@ -683,13 +671,6 @@
     <path name="low-latency-playback usb-headset">
         <ctl name="USB_AUDIO_RX Audio Mixer MultiMedia5" value="1" />
     </path>
-
-<!-- #ifdef VENDOR_EDIT -->
-<!-- chengzejun@MM.Audio,2020/07/08, modify TTY HCO and VCO backend to fix no sound issue-->
-    <path name="low-latency-playback voice-tty-hco-handset">
-        <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia5" value="1" />
-    </path>
-<!--#endif-->
 
     <path name="low-latency-playback speaker-and-usb-headphones">
         <path name="low-latency-playback usb-headphones" />
@@ -864,13 +845,6 @@
         <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia4" value="1" />
     </path>
 
-    <!-- #if OP_FEATURE_MM_CLOSE_PA == 1 -->
-    <!-- rich.yu@MM.Audio, 2021/04/09, porting new close PA for N100_R -->
-    <path name="compress-offload-playback dummy">
-        <ctl name="AFE_PCM_RX Audio Mixer MultiMedia4" value="1" />
-    </path>
-    <!-- #endif /* OP_FEATURE_MM_CLOSE_PA */ -->
-
     <path name="compress-offload-playback handset">
         <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia4" value="1" />
     </path>
@@ -996,13 +970,6 @@
         <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia7" value="1" />
     </path>
 
-    <!-- #if OP_FEATURE_MM_CLOSE_PA == 1 -->
-    <!-- rich.yu@MM.Audio, 2021/04/09, porting new close PA for N100_R -->
-    <path name="compress-offload-playback2 dummy">
-        <ctl name="AFE_PCM_RX Audio Mixer MultiMedia7" value="1" />
-    </path>
-    <!-- #endif /* OP_FEATURE_MM_CLOSE_PA */ -->
-
     <path name="compress-offload-playback2 handset">
         <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia7" value="1" />
     </path>
@@ -1115,13 +1082,6 @@
     <path name="compress-offload-playback3">
         <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia10" value="1" />
     </path>
-
-    <!-- #if OP_FEATURE_MM_CLOSE_PA == 1 -->
-    <!-- rich.yu@MM.Audio, 2021/04/09, porting new close PA for N100_R -->
-    <path name="compress-offload-playback3 dummy">
-        <ctl name="AFE_PCM_RX Audio Mixer MultiMedia10" value="1" />
-    </path>
-    <!-- #endif /* OP_FEATURE_MM_CLOSE_PA */ -->
 
     <path name="compress-offload-playback3 handset">
         <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia10" value="1" />
@@ -1236,13 +1196,6 @@
         <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia11" value="1" />
     </path>
 
-    <!-- #if OP_FEATURE_MM_CLOSE_PA == 1 -->
-    <!-- rich.yu@MM.Audio, 2021/04/09, porting new close PA for N100_R -->
-    <path name="compress-offload-playback4 dummy">
-        <ctl name="AFE_PCM_RX Audio Mixer MultiMedia11" value="1" />
-    </path>
-    <!-- #endif /* OP_FEATURE_MM_CLOSE_PA */ -->
-
     <path name="compress-offload-playback4 handset">
         <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia11" value="1" />
     </path>
@@ -1355,13 +1308,6 @@
     <path name="compress-offload-playback5">
         <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia12" value="1" />
     </path>
-
-    <!-- #if OP_FEATURE_MM_CLOSE_PA == 1 -->
-    <!-- rich.yu@MM.Audio, 2021/04/09, porting new close PA for N100_R -->
-    <path name="compress-offload-playback5 dummy">
-        <ctl name="AFE_PCM_RX Audio Mixer MultiMedia12" value="1" />
-    </path>
-    <!-- #endif /* OP_FEATURE_MM_CLOSE_PA */ -->
 
     <path name="compress-offload-playback5 handset">
         <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia12" value="1" />
@@ -1476,13 +1422,6 @@
         <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia13" value="1" />
     </path>
 
-    <!-- #if OP_FEATURE_MM_CLOSE_PA == 1 -->
-    <!-- rich.yu@MM.Audio, 2021/04/09, porting new close PA for N100_R -->
-    <path name="compress-offload-playback6 dummy">
-        <ctl name="AFE_PCM_RX Audio Mixer MultiMedia13" value="1" />
-    </path>
-    <!-- #endif /* OP_FEATURE_MM_CLOSE_PA */ -->
-
     <path name="compress-offload-playback6 handset">
         <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia13" value="1" />
     </path>
@@ -1595,13 +1534,6 @@
     <path name="compress-offload-playback7">
         <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia14" value="1" />
     </path>
-
-    <!-- #if OP_FEATURE_MM_CLOSE_PA == 1 -->
-    <!-- rich.yu@MM.Audio, 2021/04/09, porting new close PA for N100_R -->
-    <path name="compress-offload-playback7 dummy">
-        <ctl name="AFE_PCM_RX Audio Mixer MultiMedia14" value="1" />
-    </path>
-    <!-- #endif /* OP_FEATURE_MM_CLOSE_PA */ -->
 
     <path name="compress-offload-playback7 handset">
         <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia14" value="1" />
@@ -1716,13 +1648,6 @@
         <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia15" value="1" />
     </path>
 
-    <!-- #if OP_FEATURE_MM_CLOSE_PA == 1 -->
-    <!-- rich.yu@MM.Audio, 2021/04/09, porting new close PA for N100_R -->
-    <path name="compress-offload-playback8 dummy">
-        <ctl name="AFE_PCM_RX Audio Mixer MultiMedia15" value="1" />
-    </path>
-    <!-- #endif /* OP_FEATURE_MM_CLOSE_PA */ -->
-
     <path name="compress-offload-playback8 handset">
         <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia15" value="1" />
     </path>
@@ -1835,13 +1760,6 @@
     <path name="compress-offload-playback9">
         <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia16" value="1" />
     </path>
-
-    <!-- #if OP_FEATURE_MM_CLOSE_PA == 1 -->
-    <!-- rich.yu@MM.Audio, 2021/04/09, porting new close PA for N100_R -->
-    <path name="compress-offload-playback9 dummy">
-        <ctl name="AFE_PCM_RX Audio Mixer MultiMedia16" value="1" />
-    </path>
-    <!-- #endif /* OP_FEATURE_MM_CLOSE_PA */ -->
 
     <path name="compress-offload-playback9 handset">
         <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia16" value="1" />
@@ -2080,22 +1998,6 @@
          <path name="play-fm headphones" />
     </path>
 
-<!-- #ifdef VENDOR_EDIT -->
-<!-- chengzejun@MM.Audio,2020/07/08, modify TTY HCO and VCO backend to fix no sound issue-->
-    <path name="voicemmode1-call voice-tty-hco-handset">
-        <ctl name="RX_CDC_DMA_RX_0_Voice Mixer VoiceMMode1" value="1" />
-        <ctl name="VoiceMMode1_Tx Mixer TX_CDC_DMA_TX_3_MMode1" value="1" />
-    </path>
-<!--#endif-->
-
-<!-- #ifdef VENDOR_EDIT -->
-<!-- chengzejun@MM.Audio,2020/07/08, add HCO usb-headset-mic path to compatible with usb digital adapter to TTY-->
-    <path name="voicemmode1-call voice-tty-hco-handset-and-usb-headset-mic">
-        <ctl name="RX_CDC_DMA_RX_0_Voice Mixer VoiceMMode1" value="1" />
-        <ctl name="VoiceMMode1_Tx Mixer USB_AUDIO_TX_MMode1" value="1" />
-    </path>
-<!--#endif-->
-
     <path name="incall-rec-uplink">
         <ctl name="MultiMedia9 Mixer VOC_REC_UL" value="1" />
     </path>
@@ -2117,6 +2019,10 @@
     </path>
 
     <path name="incall-rec-uplink afe-proxy">
+        <path name="incall-rec-uplink" />
+    </path>
+
+    <path name="incall-rec-uplink call-proxy-in">
         <path name="incall-rec-uplink" />
     </path>
 
@@ -2176,6 +2082,10 @@
         <path name="incall-rec-downlink" />
     </path>
 
+    <path name="incall-rec-downlink call-proxy-in">
+        <path name="incall-rec-downlink" />
+    </path>
+
     <path name="incall-rec-downlink headset-mic">
         <path name="incall-rec-downlink" />
     </path>
@@ -2226,6 +2136,10 @@
     </path>
 
     <path name="incall-rec-uplink-and-downlink afe-proxy">
+        <path name="incall-rec-uplink-and-downlink" />
+    </path>
+
+    <path name="incall-rec-uplink-and-downlink call-proxy-in">
         <path name="incall-rec-uplink-and-downlink" />
     </path>
 
@@ -2340,6 +2254,11 @@
         <ctl name="VoiceMMode1_Tx Mixer TX_CDC_DMA_TX_3_MMode1" value="1" />
     </path>
 
+    <path name="voicemmode1-call call-proxy">
+        <ctl name="PROXY_RX_Voice Mixer VoiceMMode1" value="1" />
+        <ctl name="VoiceMMode1_Tx Mixer PROXY_TX_MMode1" value="1" />
+    </path>
+
     <path name="voicemmode1-call headphones">
         <ctl name="RX_CDC_DMA_RX_0_Voice Mixer VoiceMMode1" value="1" />
         <ctl name="VoiceMMode1_Tx Mixer TX_CDC_DMA_TX_3_MMode1" value="1" />
@@ -2448,17 +2367,15 @@
         <ctl name="VoiceMMode2_Tx Mixer TX_CDC_DMA_TX_3_MMode2" value="1" />
     </path>
 
+    <path name="voicemmode2-call call-proxy">
+        <ctl name="PROXY_RX_Voice Mixer VoiceMMode2" value="1" />
+        <ctl name="VoiceMMode2_Tx Mixer PROXY_TX_MMode2" value="1" />
+    </path>
+
     <!-- VoIP Rx settings -->
     <path name="audio-playback-voip">
         <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia10" value="1" />
     </path>
-
-    <!-- #if OP_FEATURE_MM_CLOSE_PA == 1 -->
-    <!-- rich.yu@MM.Audio, 2021/04/09, porting new close PA for N100_R -->
-    <path name="audio-playback-voip dummy">
-        <ctl name="AFE_PCM_RX Audio Mixer MultiMedia10" value="1" />
-    </path>
-    <!-- #endif /* OP_FEATURE_MM_CLOSE_PA */ -->
 
     <path name="audio-playback-voip handset">
         <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia10" value="1" />
@@ -2727,13 +2644,6 @@
         <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia16" value="1" />
     </path>
 
-    <!-- #if OP_FEATURE_MM_CLOSE_PA == 1 -->
-    <!-- rich.yu@MM.Audio, 2021/04/09, porting new close PA for N100_R -->
-    <path name="mmap-playback dummy">
-        <ctl name="AFE_PCM_RX Audio Mixer MultiMedia16" value="1" />
-    </path>
-    <!-- #endif /* OP_FEATURE_MM_CLOSE_PA */ -->
-
     <path name="mmap-playback handset">
         <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia16" value="1" />
     </path>
@@ -2968,8 +2878,106 @@
     <path name="incall_music_uplink bt-a2dp">
         <path name="incall_music_uplink" />
     </path>
-    <path name="incall_music_uplink afe-proxy">
+
+    <path name="incall_music_uplink call-proxy">
         <path name="incall_music_uplink" />
+    </path>
+
+    <path name="incall_music_uplink2">
+        <ctl name="Incall_Music_2 Audio Mixer MultiMedia9" value="1" />
+    </path>
+
+    <path name="incall_music_uplink2 speaker">
+        <path name="incall_music_uplink2" />
+    </path>
+
+    <path name="incall_music_uplink2 handset">
+        <path name="incall_music_uplink2" />
+    </path>
+
+    <path name="incall_music_uplink2 handset-hac">
+        <path name="incall_music_uplink2" />
+    </path>
+
+    <path name="incall_music_uplink2 display-port">
+        <path name="incall_music_uplink2" />
+    </path>
+
+    <path name="incall_music_uplink2 bt-sco">
+        <path name="incall_music_uplink2" />
+    </path>
+
+    <path name="incall_music_uplink2 bt-sco-wb">
+        <path name="incall_music_uplink2" />
+    </path>
+
+    <path name="incall_music_uplink2 bt-sco-swb">
+        <path name="incall_music_uplink2" />
+    </path>
+
+    <path name="incall_music_uplink2 speaker-and-display-port">
+        <path name="incall_music_uplink2" />
+    </path>
+
+    <path name="incall_music_uplink2 speaker-safe-and-display-port">
+        <path name="incall_music_uplink2" />
+    </path>
+
+    <path name="incall_music_uplink2 afe-proxy">
+        <path name="incall_music_uplink2" />
+    </path>
+
+    <path name="incall_music_uplink2 usb-headphones">
+        <path name="incall_music_uplink2" />
+    </path>
+
+    <path name="incall_music_uplink2 usb-headset">
+        <path name="incall_music_uplink2" />
+    </path>
+
+    <path name="incall_music_uplink2 speaker-and-usb-headphones">
+        <path name="incall_music_uplink2" />
+    </path>
+
+    <path name="incall_music_uplink2 speaker-safe-and-usb-headphones">
+        <path name="incall_music_uplink2" />
+    </path>
+    <path name="incall_music_uplink2 headphones">
+        <path name="incall_music_uplink2" />
+    </path>
+
+    <path name="incall_music_uplink2 headset">
+        <path name="incall_music_uplink2" />
+    </path>
+
+    <path name="incall_music_uplink2 speaker-and-headphones">
+        <path name="incall_music_uplink2" />
+    </path>
+
+    <path name="incall_music_uplink2 speaker-safe-and-headphones">
+        <path name="incall_music_uplink2" />
+    </path>
+    <path name="incall_music_uplink2 speaker-and-bt-sco">
+        <path name="incall_music_uplink2" />
+    </path>
+
+    <path name="incall_music_uplink2 speaker-safe-and-bt-sco">
+        <path name="incall_music_uplink2" />
+    </path>
+    <path name="incall_music_uplink2 voice-tty-hco-handset">
+        <path name="incall_music_uplink2" />
+    </path>
+
+    <path name="incall_music_uplink2 speaker-and-bt-a2dp">
+        <path name="incall_music_uplink2" />
+    </path>
+
+    <path name="incall_music_uplink2 bt-a2dp">
+        <path name="incall_music_uplink2" />
+    </path>
+
+    <path name="incall_music_uplink2 call-proxy">
+        <path name="incall_music_uplink2" />
     </path>
 
    <path name="spkr-rx-calib">
@@ -3031,7 +3039,7 @@
         <ctl name="TX_AIF1_CAP Mixer DEC0" value="1" />
         <ctl name="TX DMIC MUX0" value="DMIC3" />
     </path>
-	
+
     <path name="dmic5">
         <ctl name="TX_CDC_DMA_TX_3 Channels" value="One" />
         <ctl name="TX_AIF1_CAP Mixer DEC0" value="1" />
@@ -3045,59 +3053,17 @@
     </path>
 
     <path name="speaker">
-        <ctl name="RX_MACRO RX0 MUX" value="AIF1_PB" />
         <ctl name="RX_MACRO RX1 MUX" value="AIF1_PB" />
-        <ctl name="RX_CDC_DMA_RX_0 Channels" value="Two" />
-        <ctl name="RX INT0_1 MIX1 INP0" value="RX0" />
-        <ctl name="RX INT0 DEM MUX" value="CLSH_DSM_OUT" />
-        <ctl name="EAR_RDAC Switch" value="1" />
-        <ctl name="RDAC3_MUX" value="RX1" />
-        <ctl name="RX_EAR Mode" value="ON" />
-        <ctl name="Ext_Receiver_Amp_spkmode" value="On" />
+        <ctl name="RX_CDC_DMA_RX_0 Channels" value="One" />
         <ctl name="RX INT2_1 MIX1 INP0" value="RX1" />
         <ctl name="RX HPH Mode" value="CLS_AB" />
         <ctl name="AUX_RDAC Switch" value="1" />
-        <ctl name="RX_RX0 Digital Volume" value="78" />
         <ctl name="RX_RX2 Digital Volume" value="78" />
-        <ctl name="Ext_Speaker_Amp_spkmode" value="On" />
-        <ctl name="SpkrMonoL Sia81xx Power" value="On" />
-        <ctl name="SpkrMonoR Sia81xx Power" value="On" />
-    </path>
-
-<!-- chengzejun@MM.Audio, 2020/07/27, add game mixer path -->
-    <path name="speaker-ext-1">
-        <path name="speaker" />
-    </path>
-
-    <path name="speaker-ext-2">
-        <path name="speaker" />
-    </path>
-
-    <path name="speaker-special-1">
-        <path name="speaker" />
+        <ctl name="Ext_BOTTOM_Speaker_Amp" value="On" />
     </path>
 
     <path name="speaker-mono">
-        <ctl name="RX_MACRO RX1 MUX" value="AIF1_PB" />
-        <ctl name="RX_CDC_DMA_RX_0 Channels" value="One" />
-        <ctl name="RX INT2_1 MIX1 INP0" value="RX1" />
-        <ctl name="RX HPH Mode" value="CLS_AB" />
-        <ctl name="AUX_RDAC Switch" value="1" />
-        <ctl name="RX_RX2 Digital Volume" value="78" />
-        <ctl name="Ext_Speaker_Amp_spkmode" value="On" />
-        <ctl name="SpkrMonoL Sia81xx Power" value="On" />
-    </path>
-
-    <!-- zhoufeng@multimedia, 2020/07/14, Add for SPK test of HQ factory -->
-    <path name="spk_test_vendor">
-        <ctl name="RX_MACRO RX1 MUX" value="AIF1_PB" />
-        <ctl name="RX_CDC_DMA_RX_0 Channels" value="One" />
-        <ctl name="RX INT2_1 MIX1 INP0" value="RX1" />
-        <ctl name="RX HPH Mode" value="CLS_AB" />
-        <ctl name="AUX_RDAC Switch" value="1" />
-        <ctl name="RX_RX2 Digital Volume" value="78" />
-        <ctl name="Ext_Speaker_Amp_spkmode" value="On" />
-        <ctl name="SpkrMonoL Sia81xx Power" value="On" />
+        <path name="speaker" />
     </path>
 
     <path name="speaker-mono-2">
@@ -3107,33 +3073,6 @@
     <path name="speaker-safe">
         <path name="speaker" />
     </path>
-
-    <path name="voip-speaker">
-        <ctl name="RX_MACRO RX0 MUX" value="AIF1_PB" />
-        <ctl name="RX_MACRO RX1 MUX" value="AIF1_PB" />
-        <ctl name="RX_CDC_DMA_RX_0 Channels" value="Two" />
-        <ctl name="RX INT0_1 MIX1 INP0" value="RX0" />
-        <ctl name="RX INT0 DEM MUX" value="CLSH_DSM_OUT" />
-        <ctl name="EAR_RDAC Switch" value="1" />
-        <ctl name="RDAC3_MUX" value="RX1" />
-        <ctl name="RX_EAR Mode" value="ON" />
-        <ctl name="Ext_Receiver_Amp_spkmode" value="On" />
-        <ctl name="RX INT2_1 MIX1 INP0" value="RX1" />
-        <ctl name="RX HPH Mode" value="CLS_AB" />
-        <ctl name="AUX_RDAC Switch" value="1" />
-        <ctl name="RX_RX0 Digital Volume" value="78" />
-        <ctl name="RX_RX2 Digital Volume" value="78" />
-        <ctl name="Ext_Speaker_Amp_spkmode" value="On" />
-        <ctl name="SpkrMonoL Sia81xx Power" value="On" />
-        <ctl name="SpkrMonoR Sia81xx Power" value="On" />
-    </path>
-
-    <!-- #if OP_FEATURE_MM_CLOSE_PA == 1 -->
-    <!-- rich.yu@MM.Audio, 2021/04/09, porting new close PA for N100_R -->
-    <path name="dummy">
-        <!-- For mute PA playback device, EMPTY PATH -->
-    </path>
-    <!-- #endif /* OP_FEATURE_MM_CLOSE_PA */ -->
 
    <path name="sidetone-iir">
         <ctl name="IIR0 Enable Band1" value="1" />
@@ -3145,7 +3084,7 @@
 
     <path name="sidetone-headphones">
         <path name="sidetone-iir" />
-        <ctl name="IIR0 INP0 Volume" value="0" />
+        <ctl name="IIR0 INP0 Volume" value="40" />
         <ctl name="IIR0 INP0 MUX" value="DEC0" />
         <ctl name="RX INT0 MIX2 INP" value="SRC0" />
         <ctl name="RX INT1 MIX2 INP" value="SRC0" />
@@ -3153,7 +3092,7 @@
 
     <path name="sidetone-handset">
         <path name="sidetone-iir" />
-        <ctl name="IIR0 INP0 Volume" value="0" />
+        <ctl name="IIR0 INP0 Volume" value="54" />
         <ctl name="IIR0 INP0 MUX" value="DEC0" />
         <ctl name="RX INT0 MIX2 INP" value="SRC0" />
     </path>
@@ -3163,9 +3102,7 @@
     </path>
 
     <path name="speaker-mic">
-        <path name="amic1" />
-        <ctl name="TX_DEC2 Volume" value="84" />
-        <ctl name="ADC1 Volume" value="6" />
+        <path name="amic3" />
     </path>
 
     <path name="handset">
@@ -3176,100 +3113,11 @@
         <ctl name="EAR_RDAC Switch" value="1" />
         <ctl name="RDAC3_MUX" value="RX1" />
         <ctl name="RX_EAR Mode" value="ON" />
-        <ctl name="Ext_Receiver_Amp_rcvmode" value="On" />
-    </path>
-
-    <path name="voice-hac-handset">
-        <ctl name="RX_MACRO RX0 MUX" value="AIF1_PB" />
-        <ctl name="RX_CDC_DMA_RX_0 Channels" value="One" />
-        <ctl name="RX INT0_1 MIX1 INP0" value="RX0" />
-        <ctl name="RX INT0 DEM MUX" value="CLSH_DSM_OUT" />
-        <ctl name="EAR_RDAC Switch" value="1" />
-        <ctl name="RDAC3_MUX" value="RX1" />
-        <ctl name="RX_EAR Mode" value="ON" />
-        <ctl name="Ext_Receiver_Amp_rcvmode" value="On" />
     </path>
 
     <path name="handset-mic">
         <path name="amic1" />
-        <ctl name="TX_DEC2 Volume" value="93" />
-        <ctl name="ADC1 Volume" value="6" />
     </path>
-
-<!--#ifdef VENDOR_EDIT  -->
-<!-- //chengzejun@MM.Audio, 2020/07/27, Add  special mic -->
-    <!-- #if OP_FEATURE_MM_NS_AEC == 1 -->
-    <!-- mian.zhang@mm.audio, 2021/04/14, porting ns aec for N100_R -->
-    <path name="handset-mic-karaoke">
-        <ctl name="TX_CDC_DMA_TX_3 Channels" value="Two" />
-        <ctl name="TX DEC0 MUX" value="SWR_MIC" />
-        <ctl name="TX SMIC MUX0" value="SWR_MIC0" />
-        <ctl name="TX_AIF1_CAP Mixer DEC0" value="1" />
-        <ctl name="ADC1_MIXER Switch" value="1" />
-        <ctl name="TX_DEC0 Volume" value="93" />
-        <ctl name="ADC1 Volume" value="6" />
-        <ctl name="TX DEC1 MUX" value="SWR_MIC" />
-        <ctl name="TX SMIC MUX1" value="SWR_MIC4" />
-        <ctl name="TX_AIF1_CAP Mixer DEC1" value="1" />
-        <ctl name="ADC2_MIXER Switch" value="1" />
-        <ctl name="ADC2 MUX" value="INP3" />
-        <ctl name="TX_DEC1 Volume" value="93" />
-        <ctl name="ADC2 Volume" value="6" />
-    </path>
-
-    <path name="handset-mic-king">
-        <ctl name="TX_CDC_DMA_TX_3 Channels" value="Two" />
-        <ctl name="TX DEC0 MUX" value="SWR_MIC" />
-        <ctl name="TX SMIC MUX0" value="SWR_MIC0" />
-        <ctl name="TX_AIF1_CAP Mixer DEC0" value="1" />
-        <ctl name="ADC1_MIXER Switch" value="1" />
-        <ctl name="TX_DEC0 Volume" value="93" />
-        <ctl name="ADC1 Volume" value="6" />
-        <ctl name="TX DEC1 MUX" value="SWR_MIC" />
-        <ctl name="TX SMIC MUX1" value="SWR_MIC4" />
-        <ctl name="TX_AIF1_CAP Mixer DEC1" value="1" />
-        <ctl name="ADC2_MIXER Switch" value="1" />
-        <ctl name="ADC2 MUX" value="INP3" />
-        <ctl name="TX_DEC1 Volume" value="93" />
-        <ctl name="ADC2 Volume" value="6" />
-    </path>
-
-    <path name="voice-speaker-voip-mic">
-        <ctl name="TX_CDC_DMA_TX_3 Channels" value="Two" />
-        <ctl name="TX DEC0 MUX" value="SWR_MIC" />
-        <ctl name="TX SMIC MUX0" value="SWR_MIC4" />
-        <ctl name="TX_AIF1_CAP Mixer DEC0" value="1" />
-        <ctl name="ADC2_MIXER Switch" value="1" />
-        <ctl name="ADC2 MUX" value="INP3" />
-        <ctl name="TX_DEC1 Volume" value="84" />
-        <ctl name="ADC2 Volume" value="6" />
-        <ctl name="TX DEC1 MUX" value="SWR_MIC" />
-        <ctl name="TX SMIC MUX1" value="SWR_MIC0" />
-        <ctl name="TX_AIF1_CAP Mixer DEC1" value="1" />
-        <ctl name="ADC1_MIXER Switch" value="1" />
-        <ctl name="TX_DEC0 Volume" value="84" />
-        <ctl name="ADC1 Volume" value="6" />
-    </path>
-
-    <path name="handset-mic-rec-spec-gain">
-        <path name="amic1" />
-        <ctl name="TX_DEC2 Volume" value="93" />
-        <ctl name="ADC1 Volume" value="6" />
-    </path>
-
-    <path name="headphone-mic-karaoke">
-        <path name="amic1" />
-        <ctl name="TX_DEC2 Volume" value="93" />
-        <ctl name="ADC1 Volume" value="6" />
-    </path>
-
-    <path name="handset-mic-rec">
-        <path name="amic1" />
-        <ctl name="TX_DEC2 Volume" value="93" />
-        <ctl name="ADC1 Volume" value="6" />
-    </path>
-     <!-- #endif /*OP_FEATURE_MM_NS_AEC*/ -->
-<!--endif -->
 
     <path name="headphones">
         <ctl name="RX_MACRO RX0 MUX" value="AIF1_PB" />
@@ -3283,11 +3131,6 @@
         <ctl name="HPHR_RDAC Switch" value="1" />
         <ctl name="RX_RX0 Digital Volume" value="82" />
         <ctl name="RX_RX1 Digital Volume" value="82" />
-        <!--#chengzejun@PSW.MM.AudioDriver.HAL,2020/07/13, Add DRE-->
-        <ctl name="RX_COMP1 Switch" value="1" />
-        <ctl name="RX_COMP2 Switch" value="1" />
-        <ctl name="HPHL_COMP Switch" value="1" />
-        <ctl name="HPHR_COMP Switch" value="1" />
     </path>
 
     <path name="headphones-44.1">
@@ -3317,26 +3160,18 @@
 
     <path name="headset-mic">
         <path name="amic2" />
-        <ctl name="TX_DEC0 Volume" value="84" />
     </path>
 
     <path name="voice-handset">
         <path name="handset" />
     </path>
 
-    <!-- #if OP_FEATURE_MM_HAC == 1 -->
-    <!-- rich.yu@MM.Audio, 2021/04/08, porting HAC feature for N100_R -->
-    <path name="voice-handset-hac">
-        <path name="handset" />
-    </path>
-    <!-- #endif /* OP_FEATURE_MM_HAC */ -->
-
     <path name="voice-handset-tmus">
         <path name="handset" />
     </path>
 
     <path name="voice-speaker">
-        <path name="speaker" />
+        <path name="speaker-mono" />
     </path>
 
     <path name="voice-speaker-stereo">
@@ -3368,27 +3203,8 @@
     </path>
 
     <path name="speaker-and-headphones">
-        <ctl name="RX_MACRO RX0 MUX" value="AIF1_PB" />
-        <ctl name="RX_MACRO RX1 MUX" value="AIF1_PB" />
-        <ctl name="RX_CDC_DMA_RX_0 Channels" value="Two" />
-        <ctl name="RX INT0_1 MIX1 INP0" value="RX0" />
-        <ctl name="RX INT1_1 MIX1 INP0" value="RX1" />
-        <ctl name="RX INT0 DEM MUX" value="CLSH_DSM_OUT" />
-        <ctl name="RX INT1 DEM MUX" value="CLSH_DSM_OUT" />
-        <ctl name="HPHL_RDAC Switch" value="1" />
-        <ctl name="HPHR_RDAC Switch" value="1" />
-        <ctl name="RX INT2_1 MIX1 INP0" value="RX1" />
-        <ctl name="RX HPH Mode" value="CLS_H_ULP" />
-        <ctl name="EAR_RDAC Switch" value="1" />
-        <ctl name="RDAC3_MUX" value="RX1" />
-        <ctl name="AUX_RDAC Switch" value="1" />
-        <ctl name="RX_RX0 Digital Volume" value="78" />
-        <ctl name="RX_RX1 Digital Volume" value="78" />
-        <ctl name="RX_RX2 Digital Volume" value="78" />
-        <ctl name="Ext_Receiver_Amp_spkmode" value="On" />
-        <ctl name="Ext_Speaker_Amp_spkmode" value="On" />
-        <ctl name="SpkrMonoL Sia81xx Power" value="On" />
-        <ctl name="SpkrMonoR Sia81xx Power" value="On" />
+        <path name="headphones" />
+        <path name="speaker" />
     </path>
 
     <path name="speaker-safe-and-headphones">
@@ -3405,17 +3221,21 @@
     </path>
 
     <path name="usb-headphones">
-        <ctl name="IIR0 INP0 Volume" value="0" />
     </path>
 
     <path name="usb-headset">
-        <ctl name="IIR0 INP0 Volume" value="0" />
     </path>
 
     <path name="afe-proxy">
     </path>
 
     <path name="display-port">
+    </path>
+
+    <path name="call-proxy">
+    </path>
+
+    <path name="call-proxy-in">
     </path>
 
     <path name="speaker-and-usb-headphones">
@@ -3471,22 +3291,17 @@
     </path>
 
     <!-- Dual MIC devices -->
-    <!--#zhoufeng@multimedia, 2020/06/25, Modify for dual mic -->
     <path name="handset-dmic-endfire">
         <ctl name="TX_CDC_DMA_TX_3 Channels" value="Two" />
         <ctl name="TX DEC0 MUX" value="SWR_MIC" />
         <ctl name="TX SMIC MUX0" value="SWR_MIC0" />
         <ctl name="TX_AIF1_CAP Mixer DEC0" value="1" />
         <ctl name="ADC1_MIXER Switch" value="1" />
-        <ctl name="TX_DEC0 Volume" value="93" />
-        <ctl name="ADC1 Volume" value="6" />
         <ctl name="TX DEC1 MUX" value="SWR_MIC" />
         <ctl name="TX SMIC MUX1" value="SWR_MIC4" />
         <ctl name="TX_AIF1_CAP Mixer DEC1" value="1" />
         <ctl name="ADC2_MIXER Switch" value="1" />
         <ctl name="ADC2 MUX" value="INP3" />
-        <ctl name="TX_DEC1 Volume" value="93" />
-        <ctl name="ADC2 Volume" value="6" />
     </path>
 
     <path name="speaker-dmic-endfire">
@@ -3496,84 +3311,11 @@
         <ctl name="TX_AIF1_CAP Mixer DEC0" value="1" />
         <ctl name="ADC2_MIXER Switch" value="1" />
         <ctl name="ADC2 MUX" value="INP3" />
-        <ctl name="TX_DEC1 Volume" value="84" />
-        <ctl name="ADC2 Volume" value="6" />
         <ctl name="TX DEC1 MUX" value="SWR_MIC" />
         <ctl name="TX SMIC MUX1" value="SWR_MIC0" />
         <ctl name="TX_AIF1_CAP Mixer DEC1" value="1" />
         <ctl name="ADC1_MIXER Switch" value="1" />
-        <ctl name="TX_DEC0 Volume" value="84" />
-        <ctl name="ADC1 Volume" value="6" />
     </path>
-
-    <!-- #if OP_FEATURE_MM_HAC == 1 -->
-    <!-- rich.yu@MM.Audio, 2021/04/08, porting HAC feature for N100_R -->
-    <path name="voice-dmic-ef-hac">
-        <path name="handset-dmic-endfire" />
-    </path>
-    <!-- #endif /* OP_FEATURE_MM_HAC */ -->
-    <!-- #ifdef VENDOR_EDIT-->
-
-    <!-- #if OP_FEATURE_MM_RECODER_CH_SWITCH == 1 -->
-    <!-- rich.yu@MM.Audio, 2021/04/09, porting recoder channel switch for N100_R -->
-    <path name="handset-mic-re-sbc">
-        <path name="handset-dmic-endfire" />
-    </path>
-
-    <path name="handset-mic-re-default">
-        <path name="speaker-dmic-endfire" />
-    </path>
-
-    <path name="handset-mic-re-sbc-other">
-        <path name="speaker-dmic-endfire" />
-    </path>
-
-    <path name="handset-mic-re-single">
-        <path name="speaker-dmic-endfire" />
-    </path>
-    <!-- #endif /*OP_FEATURE_MM_RECODER_CH_SWITCH*/ -->
-
-    <!-- #if OP_FEATURE_MM_RECORDING_SCREEN == 1 -->
-    <!-- rich.yu@MM.Audio, 2021/04/14, porting screen record for N100_R -->
-    <path name="screen-record-headset-mic">
-        <path name="amic2" />
-    </path>
-
-    <path name="screen-record-usb-headset-mic">
-    </path>
-    <!-- #endif /*OP_FEATURE_MM_RECORDING_SCREEN*/ -->
-
-    <!-- #if OP_FEATURE_MM_WECHAT_NS == 1 -->
-    <!-- mian.zhang@mm.audio, 2021/04/14, porting wechat ns for N100_R -->
-    <path name="speaker-mic-wechat-front">
-        <path name="amic1" />
-        <ctl name="TX_DEC2 Volume" value="84" />
-        <ctl name="ADC1 Volume" value="6" />
-    </path>
-
-    <path name="speaker-mic-wechat-back">
-        <path name="amic1" />
-        <ctl name="TX_DEC2 Volume" value="84" />
-        <ctl name="ADC1 Volume" value="6" />
-    </path>
-
-    <path name="speaker-dmic-endfire-wechat-vm">
-        <ctl name="TX_CDC_DMA_TX_3 Channels" value="Two" />
-        <ctl name="TX DEC0 MUX" value="SWR_MIC" />
-        <ctl name="TX SMIC MUX0" value="SWR_MIC4" />
-        <ctl name="TX_AIF1_CAP Mixer DEC0" value="1" />
-        <ctl name="ADC2_MIXER Switch" value="1" />
-        <ctl name="ADC2 MUX" value="INP3" />
-        <ctl name="TX_DEC1 Volume" value="84" />
-        <ctl name="ADC2 Volume" value="6" />
-        <ctl name="TX DEC1 MUX" value="SWR_MIC" />
-        <ctl name="TX SMIC MUX1" value="SWR_MIC0" />
-        <ctl name="TX_AIF1_CAP Mixer DEC1" value="1" />
-        <ctl name="ADC1_MIXER Switch" value="1" />
-        <ctl name="TX_DEC0 Volume" value="84" />
-        <ctl name="ADC1 Volume" value="6" />
-    </path>
-    <!-- #endif /*OP_FEATURE_MM_WECHAT_NS*/ -->
 
     <path name="dmic-endfire">
         <path name="handset-dmic-endfire" />
@@ -3623,27 +3365,16 @@
 
     <!-- TTY devices -->
 
-<!-- #ifdef VENDOR_EDIT -->
-<!-- chengzejun@MM.Audio,2020/07/08, modify TTY HCO and VCO backend to fix no sound issue-->
-    <!-- <path name="tty-headphones">
+    <path name="tty-headphones">
         <ctl name="RX_MACRO RX0 MUX" value="AIF1_PB" />
         <ctl name="RX INT0_1 MIX1 INP0" value="RX0" />
         <ctl name="RX INT0 DEM MUX" value="CLSH_DSM_OUT" />
         <ctl name="RX_COMP1 Switch" value="1" />
         <ctl name="HPHL_COMP Switch" value="1" />
         <ctl name="HPHL_RDAC Switch" value="1" />
-    </path> -->
-    <path name="tty-headphones">
-        <path name="headphones" />
     </path>
-<!--#endif-->
 
     <path name="voice-tty-full-headphones">
-        <ctl name="TTY Mode" value="FULL" />
-        <path name="tty-headphones" />
-    </path>
-
-    <path name="voice-tty-full-headset">
         <ctl name="TTY Mode" value="FULL" />
         <path name="tty-headphones" />
     </path>
@@ -3651,21 +3382,6 @@
     <path name="voice-tty-vco-headphones">
         <ctl name="TTY Mode" value="VCO" />
         <path name="tty-headphones" />
-    </path>
-
-    <path name="voice-tty-vco-headset">
-        <ctl name="TTY Mode" value="VCO" />
-        <path name="tty-headphones" />
-    </path>
-
-    <path name="voice-tty-hco-handset">
-        <ctl name="TTY Mode" value="HCO" />
-        <path name="handset" />
-    </path>
-
-    <path name="voice-tty-hco-handset-hdk">
-        <ctl name="TTY Mode" value="HCO" />
-        <path name="handset" />
     </path>
 
     <path name="voice-tty-full-headset-mic">
@@ -3725,119 +3441,6 @@
     <!-- Added for ADSP testfwk -->
     <path name="ADSP testfwk">
         <ctl name="RX_CDC_DMA_RX_0_DL_HL Switch" value="1" />
-    </path>
-
-<!-- chengzejun@PSW.MM.Media, 2020/08/10, Modify for CtsNativeMediaAAudioTestCases fail -->
-    <path name="mmap-playback speaker">
-       <ctl name="RX_CDC_DMA_RX_0 Audio Mixer MultiMedia16" value="1" />
-    </path>
-<!--#endif /* VENDOR_EDIT */-->
-
-
-<!-- yewenlinang@MM.Audio, 2019/05/21, add receiver-mmi mixer path -->
-    <path name="eng-mode-speaker-left">
-        <ctl name="RX_MACRO RX0 MUX" value="AIF1_PB" />
-        <ctl name="RX_CDC_DMA_RX_0 Channels" value="One" />
-        <ctl name="RX INT0_1 MIX1 INP0" value="RX0" />
-        <ctl name="RX INT0 DEM MUX" value="CLSH_DSM_OUT" />
-        <ctl name="EAR_RDAC Switch" value="1" />
-        <ctl name="RDAC3_MUX" value="RX1" />
-        <ctl name="RX_EAR Mode" value="ON" />
-        <ctl name="Ext_Receiver_Amp_spkmode" value="On" />
-        <ctl name="SpkrMonoR Sia81xx Power" value="On" />
-    </path>
-
-    <path name="eng-mode-speaker-right">
-        <ctl name="RX_MACRO RX1 MUX" value="AIF1_PB" />
-        <ctl name="RX_CDC_DMA_RX_0 Channels" value="One" />
-        <ctl name="RX INT2_1 MIX1 INP0" value="RX1" />
-        <ctl name="RX HPH Mode" value="CLS_AB" />
-        <ctl name="AUX_RDAC Switch" value="1" />
-        <ctl name="RX_RX2 Digital Volume" value="78" />
-        <ctl name="Ext_Speaker_Amp_spkmode" value="On" />
-        <ctl name="SpkrMonoL Sia81xx Power" value="On" />
-    </path>
-
-    <!--#bin.pang@PSW.MM.AudioDriver.HAL,2020/06/05, Add for MMI mode-->
-    <path name="mmi-headset-mic-loopback">
-        <ctl name="TX DEC0 MUX" value="SWR_MIC" />
-        <ctl name="TX SMIC MUX0" value="SWR_MIC4" />
-        <ctl name="TX_CDC_DMA_TX_4 Channels" value="One" />
-        <ctl name="TX_AIF2_CAP Mixer DEC0" value="1" />
-        <ctl name="DEC0_BCS Switch" value="1" />
-        <ctl name="ADC2_MIXER Switch" value="1" />
-        <ctl name="ADC2 MUX" value="INP2" />
-        <ctl name="TX_DEC0 Volume" value="90" />
-        <ctl name="RX HPH Mode" value="CLS_AB" />
-        <ctl name="RX_MACRO RX0 MUX" value="AIF1_PB" />
-        <ctl name="RX_MACRO RX1 MUX" value="AIF1_PB" />
-        <ctl name="RX_CDC_DMA_RX_0 Channels" value="Two" />
-        <ctl name="RX INT0_1 MIX1 INP0" value="IIR0" />
-        <ctl name="RX INT1_1 MIX1 INP0" value="IIR0" />
-        <ctl name="RX INT0 DEM MUX" value="CLSH_DSM_OUT" />
-        <ctl name="RX INT1 DEM MUX" value="CLSH_DSM_OUT" />
-        <ctl name="RX_COMP1 Switch" value="1" />
-        <ctl name="RX_COMP2 Switch" value="1" />
-        <ctl name="HPHL_COMP Switch" value="1" />
-        <ctl name="HPHR_COMP Switch" value="1" />
-        <ctl name="HPHL_RDAC Switch" value="1" />
-        <ctl name="HPHR_RDAC Switch" value="1" />
-        <ctl name="IIR0 INP0 MUX" value="DEC0" />
-    </path>
-
-    <path name="mmi-main-mic-loopback">
-        <ctl name="TX DEC2 MUX" value="SWR_MIC" />
-        <ctl name="TX SMIC MUX2" value="SWR_MIC0" />
-        <ctl name="TX_CDC_DMA_TX_3 Channels" value="One" />
-        <ctl name="TX_AIF1_CAP Mixer DEC2" value="1" />
-        <ctl name="ADC1_MIXER Switch" value="1" />
-        <ctl name="TX_DEC2 Volume" value="80" />
-        <ctl name="ADC1 Volume" value="6" />
-        <ctl name="RX HPH Mode" value="CLS_AB" />
-        <ctl name="RX_MACRO RX0 MUX" value="AIF1_PB" />
-        <ctl name="RX_MACRO RX1 MUX" value="AIF1_PB" />
-        <ctl name="RX_CDC_DMA_RX_0 Channels" value="Two" />
-        <ctl name="RX INT0_1 MIX1 INP2" value="IIR0" />
-        <ctl name="RX INT1_1 MIX1 INP2" value="IIR0" />
-        <ctl name="RX INT0 DEM MUX" value="CLSH_DSM_OUT" />
-        <ctl name="RX INT1 DEM MUX" value="CLSH_DSM_OUT" />
-        <ctl name="RX_COMP1 Switch" value="1" />
-        <ctl name="RX_COMP2 Switch" value="1" />
-        <ctl name="HPHL_COMP Switch" value="1" />
-        <ctl name="HPHR_COMP Switch" value="1" />
-        <ctl name="HPHL_RDAC Switch" value="1" />
-        <ctl name="HPHR_RDAC Switch" value="1" />
-        <ctl name="IIR0 INP2 MUX" value="DEC2" />
-        <ctl name="RX_RX0 Digital Volume" value="75" />
-        <ctl name="RX_RX1 Digital Volume" value="75" />
-    </path>
-
-    <path name="mmi-sub-mic-loopback">
-        <ctl name="TX DEC2 MUX" value="SWR_MIC" />
-        <ctl name="TX SMIC MUX2" value="SWR_MIC4" />
-        <ctl name="TX_CDC_DMA_TX_3 Channels" value="One" />
-        <ctl name="TX_AIF1_CAP Mixer DEC2" value="1" />
-        <ctl name="ADC2_MIXER Switch" value="1" />
-        <ctl name="ADC2 MUX" value="INP3" />
-        <ctl name="TX_DEC2 Volume" value="80" />
-        <ctl name="ADC1 Volume" value="6" />
-        <ctl name="RX HPH Mode" value="CLS_AB" />
-        <ctl name="RX_MACRO RX0 MUX" value="AIF1_PB" />
-        <ctl name="RX_MACRO RX1 MUX" value="AIF1_PB" />
-        <ctl name="RX_CDC_DMA_RX_0 Channels" value="Two" />
-        <ctl name="RX INT0_1 MIX1 INP2" value="IIR0" />
-        <ctl name="RX INT1_1 MIX1 INP2" value="IIR0" />
-        <ctl name="RX INT0 DEM MUX" value="CLSH_DSM_OUT" />
-        <ctl name="RX INT1 DEM MUX" value="CLSH_DSM_OUT" />
-        <ctl name="RX_COMP1 Switch" value="1" />
-        <ctl name="RX_COMP2 Switch" value="1" />
-        <ctl name="HPHL_COMP Switch" value="1" />
-        <ctl name="HPHR_COMP Switch" value="1" />
-        <ctl name="HPHL_RDAC Switch" value="1" />
-        <ctl name="HPHR_RDAC Switch" value="1" />
-        <ctl name="IIR0 INP2 MUX" value="DEC2" />
-        <ctl name="RX_RX0 Digital Volume" value="75" />
-        <ctl name="RX_RX1 Digital Volume" value="75" />
     </path>
 
 </mixer>
