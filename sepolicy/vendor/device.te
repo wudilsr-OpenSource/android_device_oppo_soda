@@ -6,4 +6,3 @@ type oemlogkit_socket, dev_type;
 type ramboost_socket, dev_type;
 type silead_fpd_device, dev_type;
 type vendor_rmt_storage_block_dev, dev_type;
-type vendor_ssd_block_dev, dev_type;

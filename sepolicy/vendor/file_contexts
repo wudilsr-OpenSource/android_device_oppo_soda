@@ -1,7 +1,6 @@
 # Block devices
 /dev/block/platform/soc/4804000.ufshc/by-name/spunvm             u:object_r:vendor_efs_boot_dev:s0
 /dev/block/platform/soc/4804000\.ufshc/by-name/(modemst1|modemst2|fsg|fsc|oppodycnvbk|oppostanvbk|opporeserve1)  u:object_r:vendor_rmt_storage_block_dev:s0
-/dev/block/platform/soc/4804000\.ufshc/by-name/ssd              u:object_r:vendor_ssd_block_dev:s0
 
 # Data files
 /data/reserve-lib(/.*)?    u:object_r:apk_data_file:s0
