@@ -39,14 +39,9 @@ qcrild_status=true
 #
 # ifdef VENDOR_EDIT
 # add for dual sim card config
-dual_sim=`cat /sys/module/printk/parameters/dual_sim`
-
-if [ "$dual_sim" = "Y" ]
-then
-    setprop ro.vendor.radio.multisim.config dsds
-else
-    setprop ro.vendor.radio.multisim.config ssss
-fi
+# soda (PDVM00) is a dual-SIM device. Force dsds: the custom kernel
+# does not expose the stock printk dual_sim parameter.
+setprop ro.vendor.radio.multisim.config dsds
 ##endif
 #
 
