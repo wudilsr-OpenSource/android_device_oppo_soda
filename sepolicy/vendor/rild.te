@@ -1,15 +1,14 @@
-hal_client_domain(rild, hal_param)
-
 allow rild vendor_data_file:dir rw_dir_perms;
 allow rild vendor_data_file:file create_file_perms;
 
 allow rild block_device:dir search;
 
-allow rild param_block_device:blk_file rw_file_perms;
-
 allow rild vendor_diag_device:chr_file rw_file_perms;
 
-allow rild proc:file w_file_perms;
+allow rild proc:file rw_file_perms;
 allow rild proc_net:file w_file_perms;
+
+allow rild oppo_reserve_file:dir r_dir_perms;
+allow rild oppo_reserve_file:file r_file_perms;
 
 set_prop(rild, vendor_rild_prop)

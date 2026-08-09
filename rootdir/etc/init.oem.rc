@@ -27,7 +27,6 @@ on charger
     start oemlogkit
 
 on fs
-    mount ext4 /dev/block/bootdevice/by-name/op1 /mnt/vendor/op1 ro barrier=1 discard context=u:object_r:op1_file:s0
     #yankelong add
     chown system system /sys/class/leds/vibrator/haptic_audio_ai_input
     chown system system /sys/class/leds/vibrator/haptic_audio_tp_input
