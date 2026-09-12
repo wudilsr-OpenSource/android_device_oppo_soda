@@ -1,3 +1,4 @@
 vendor.oplus.hardware.biometrics.face::IBiometricsFace                     u:object_r:hal_fingerprint_hwservice:s0
 vendor.oplus.hardware.biometrics.fingerprint::IBiometricsFingerprint       u:object_r:hal_fingerprint_hwservice:s0
 vendor.oplus.hardware.biometrics.fingerprintpay::IFingerprintPay           u:object_r:hal_fingerprint_hwservice:s0
+vendor.oplus.hardware.ims::IOplusImsRadio                                   u:object_r:vendor_oplus_ims_hwservice:s0

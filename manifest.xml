@@ -479,6 +479,16 @@
         </interface>
     </hal>
     <hal format="hidl">
+        <name>vendor.oplus.hardware.ims</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IOplusImsRadio</name>
+            <instance>oplusimsradio0</instance>
+            <instance>oplusimsradio1</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
         <name>vendor.qti.ims.factory</name>
         <transport>hwbinder</transport>
         <version>1.0</version>

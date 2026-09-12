@@ -169,6 +169,15 @@
         </interface>
     </hal>
     <hal format="hidl" optional="true">
+        <name>vendor.oplus.hardware.ims</name>
+        <version>1.0</version>
+        <interface>
+            <name>IOplusImsRadio</name>
+            <instance>oplusimsradio0</instance>
+            <instance>oplusimsradio1</instance>
+        </interface>
+    </hal>
+    <hal format="hidl" optional="true">
         <name>vendor.pixelworks.hardware.display</name>
         <version>1.1</version>
         <interface>

@@ -962,6 +962,7 @@ vendor/lib64/vendor.qti.gnss@4.0-service.so
 vendor/lib64/vendor.qti.gnss@4.0.so
 
 # IMS
+system_ext/framework/oplus-ims-ext.jar
 system_ext/priv-app/ims/ims.apk
 system_ext/lib64/lib-imsvideocodec.so|f4f56750a7ddc2076b9581f300e8fbb400defd42
 system_ext/lib64/lib-imsvt.so
