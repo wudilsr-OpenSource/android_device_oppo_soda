@@ -37,6 +37,10 @@ DEVICE_PACKAGE_OVERLAYS += \
 
 PRODUCT_ENFORCE_RRO_TARGETS := *
 
+# Runtime resource overlays
+PRODUCT_PACKAGES += \
+    CarrierConfigResCommon
+
 # VNDK
 PRODUCT_USE_PRODUCT_VNDK_OVERRIDE := true
 
