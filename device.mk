@@ -203,6 +203,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/component-overrides.xml:$(TARGET_COPY_OUT_VENDOR)/etc/sysconfig/component-overrides.xml
 
+# DebugFS
+PRODUCT_SET_DEBUGFS_RESTRICTIONS := true
+
 # Display
 PRODUCT_PACKAGES += \
     android.hardware.graphics.mapper@3.0-impl-qti-display \
@@ -311,7 +314,8 @@ PRODUCT_PACKAGES += \
 # LiveDisplay
 PRODUCT_PACKAGES += \
     vendor.lineage.livedisplay@2.0-service-sysfs
-
+# DebugFS
+PRODUCT_SET_DEBUGFS_RESTRICTIONS := true
 # Media
 # SM8250 HAL has SM4250 configurations.
 MEDIA_HAL_DIR := hardware/qcom-caf/sm8250/media
