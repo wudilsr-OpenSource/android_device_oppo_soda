@@ -20,10 +20,7 @@
 # Persist files
 /mnt/vendor/opporeserve(/.*)?        u:object_r:oppo_reserve_file:s0
 /mnt/vendor/persist                                  u:object_r:vendor_data_file:s0
-/mnt/vendor/persist/camera(/.*)?                     u:object_r:oem_file:s0
 /mnt/vendor/persist/camera_ae_sync(/.*)?             u:object_r:oem_file:s0
-/mnt/vendor/persist/dual_camera_calibration(/.*)?    u:object_r:oem_file:s0
-/mnt/vendor/persist/engineermode(/.*)?               u:object_r:oem_file:s0
 /mnt/vendor/persist/OPDiagnose(/.*)?                 u:object_r:oem_file:s0
 
 # Socket files
