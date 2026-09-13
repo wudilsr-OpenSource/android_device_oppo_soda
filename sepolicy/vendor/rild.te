@@ -14,4 +14,6 @@ allow rild oppo_reserve_file:file r_file_perms;
 
 set_prop(rild, vendor_rild_prop)
 
-allow rild vendor_oplus_ims_hwservice:hwservice_manager find;
+allow rild vendor_oplus_appradio_hwservice:hwservice_manager { find add };
+allow rild vendor_oplus_ims_hwservice:hwservice_manager { find add };
+allow rild vendor_oplus_radio_hwservice:hwservice_manager { find add };
