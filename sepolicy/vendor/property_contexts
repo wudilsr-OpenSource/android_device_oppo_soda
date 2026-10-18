@@ -5,7 +5,7 @@ persist.vendor.fingerprint.optical.support  u:object_r:vendor_fingerprint_prop:s
 persist.vendor.fingerprint.sensor_type    u:object_r:vendor_fingerprint_prop:s0
 persist.vendor.rpmb.enable.state         u:object_r:vendor_fingerprint_prop:s0
 persist.vendor.silead_newalgo.support     u:object_r:vendor_fingerprint_prop:s0
-vendor.oppo.camera.id                     u:object_r:vendor_camera_prop:s0
+vendor.oppo.camera.                       u:object_r:vendor_camera_prop:s0
 vendor.silead.fp.ext.enable               u:object_r:vendor_fingerprint_prop:s0
 persist.vendor.oem.bt.debug               u:object_r:vendor_oem_bluetooth_prop:s0
 persist.vendor.oem.btenhanced.debug       u:object_r:vendor_oem_bluetooth_prop:s0
