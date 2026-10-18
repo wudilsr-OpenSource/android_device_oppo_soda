@@ -1,5 +1,0 @@
-# oem_cust1/oem_cust2 partitions do not exist on soda; the cust overlay
-# mounts were dead code (ro.boot.cust is unset on this device).
-
-on property:ro.boot.product.hardware.sku=9
-    setprop persist.radio.multisim.config ssss
