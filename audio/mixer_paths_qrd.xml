@@ -433,6 +433,9 @@
     <ctl name="MultiMedia16 Mixer SLIM_8_TX" value="0" />
     <ctl name="MultiMedia16 Mixer USB_AUDIO_TX" value="0" />
 
+    <ctl name="aw87xxx_mode_switch_0" value="Off" />
+    <ctl name="aw87xxx_mode_switch_1" value="Off" />
+
     <!-- These are audio route (FE to BE) specific mixer settings -->
     <path name="gsm-mode">
         <ctl name="RX_GSM mode Enable" value="ON" />
@@ -3060,6 +3063,7 @@
         <ctl name="AUX_RDAC Switch" value="1" />
         <ctl name="RX_RX2 Digital Volume" value="78" />
         <ctl name="Ext_BOTTOM_Speaker_Amp" value="On" />
+        <ctl name="aw87xxx_mode_switch_0" value="Music" />
     </path>
 
     <path name="speaker-mono">
@@ -3113,6 +3117,7 @@
         <ctl name="EAR_RDAC Switch" value="1" />
         <ctl name="RDAC3_MUX" value="RX1" />
         <ctl name="RX_EAR Mode" value="ON" />
+        <ctl name="aw87xxx_mode_switch_1" value="Rcv" />
     </path>
 
     <path name="handset-mic">
