@@ -48,3 +48,6 @@ genfscon sysfs /devices/platform/soc/soc:qcom,ipa_uc/wakeup u:object_r:sysfs_wak
 genfscon sysfs /devices/platform/soc/soc:qcom,msm-audio-apr/soc:qcom,msm-audio-apr:qcom,q6core-audio/soc:qcom,msm-audio-apr:qcom,q6core-audio:bolero-cdc/tx-macro/tx_swr_ctrl/wakeup u:object_r:sysfs_wakeup:s0
 genfscon sysfs /devices/platform/soc/soc:qcom,smp2p-dsps/wakeup u:object_r:sysfs_wakeup:s0
 genfscon sysfs /devices/platform/soc/soc:qcom,smp2p-npu/wakeup u:object_r:sysfs_wakeup:s0
+
+# egis fingerprint sysfs
+genfscon sysfs /devices/platform/egis_input    u:object_r:sysfs_egis_input:s0

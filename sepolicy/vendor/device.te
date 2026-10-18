@@ -1,5 +1,6 @@
 type backuprestore_socket, dev_type;
 type byte_cntr_device, dev_type;
+type egis_finger_device, dev_type;
 type fingerprintd_device, dev_type;
 type memplus_device, dev_type;
 type oemlogkit_socket, dev_type;

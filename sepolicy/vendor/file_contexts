@@ -7,6 +7,7 @@
 
 # Devices
 /dev/byte-cntr            u:object_r:byte_cntr_device:s0
+/dev/esfp0                u:object_r:egis_finger_device:s0
 /dev/cc_ctl               u:object_r:graphics_device:s0
 /dev/memplus              u:object_r:memplus_device:s0
 /dev/silead_fp            u:object_r:silead_fpd_device:s0
@@ -19,6 +20,7 @@
 
 # Persist files
 /mnt/vendor/opporeserve(/.*)?        u:object_r:oppo_reserve_file:s0
+/mnt/vendor/opporeserve/radio(/.*)?  u:object_r:oppo_reserve_radio_file:s0
 /mnt/vendor/persist                                  u:object_r:vendor_data_file:s0
 /mnt/vendor/persist/camera(/.*)?                     u:object_r:oem_file:s0
 /mnt/vendor/persist/camera_ae_sync(/.*)?             u:object_r:oem_file:s0
