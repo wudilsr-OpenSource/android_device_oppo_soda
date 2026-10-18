@@ -627,6 +627,7 @@ vendor/lib64/libsysmon_cdsp_skel.so
 
 # Charger
 vendor/bin/hvdcp_opti
+vendor/etc/charger_fstab.qti
 vendor/etc/init/vendor.qti.hardware.charger_monitor@1.0-service.rc
 
 # CNE
@@ -701,6 +702,7 @@ vendor/lib64/libhdr_tm.so
 
 # Display (HWC)
 vendor/bin/hw/vendor.qti.hardware.display.composer-service
+vendor/etc/display/advanced_sf_offsets.xml
 vendor/lib/libqdutils.so
 vendor/lib64/libdisplayconfig.qti.so
 vendor/lib64/libqdutils.so
@@ -810,12 +812,15 @@ odm/lib/vendor.oplus.hardware.biometrics.fingerprintpay@1.0.so
 odm/lib/vendor.oplus.hardware.biometrics.fingerprintservice@1.0.so
 odm/lib/vendor.oplus.hardware.commondcs@1.0.so
 odm/lib64/anc.hal.so
+odm/lib64/hw/cdfinger.fingerprint.default.so
 odm/lib64/hw/fingerprint.goodix_G2.default.so
 odm/lib64/hw/fingerprint.goodix_G3.default.so
 odm/lib64/hw/fingerprint.goodix_G5.default.so
 odm/lib64/hw/fingerprint.goodix_G6.default.so
 odm/lib64/hw/fingerprint.silead.default.so
+odm/lib64/hw/libets_teeclient_v2.so
 odm/lib64/libalipay_factory.so
+odm/lib64/libRbsFlow_cap.so
 odm/lib64/librpmbengclient.so
 odm/lib64/libsl_fp_impl.so
 odm/lib64/vendor.oplus.hardware.biometrics.fingerprint@2.1.so
@@ -831,6 +836,15 @@ odm/vendor/firmware/cdfinger.b05
 odm/vendor/firmware/cdfinger.b06
 odm/vendor/firmware/cdfinger.b07
 odm/vendor/firmware/cdfinger.mdt
+odm/vendor/firmware/egista.b00
+odm/vendor/firmware/egista.b01
+odm/vendor/firmware/egista.b02
+odm/vendor/firmware/egista.b03
+odm/vendor/firmware/egista.b04
+odm/vendor/firmware/egista.b05
+odm/vendor/firmware/egista.b06
+odm/vendor/firmware/egista.b07
+odm/vendor/firmware/egista.mdt
 odm/vendor/firmware/goodixfp.b00
 odm/vendor/firmware/goodixfp.b01
 odm/vendor/firmware/goodixfp.b02
@@ -917,6 +931,8 @@ vendor/bin/xtra-daemon
 vendor/bin/xtwifi-client
 vendor/bin/xtwifi-inet-agent
 vendor/etc/cacert_location.pem
+vendor/etc/gnss_antenna_info.conf
+vendor/etc/gpfspath_oem_config.xml
 vendor/etc/init/android.hardware.gnss@2.1-service-qti.rc
 vendor/etc/vintf/manifest/android.hardware.gnss@2.1-service-qti.xml
 vendor/etc/vintf/manifest/vendor.qti.gnss@4.0-service.xml
@@ -1061,6 +1077,12 @@ vendor/lib64/libkeymasterdeviceutils.so
 vendor/lib64/libkeymasterprovision.so
 vendor/lib64/libkeymasterutils.so
 vendor/lib64/libqtikeymaster4.so
+
+# Limits
+vendor/bin/hw/vendor.qti.hardware.limits@1.0-service
+vendor/etc/init/vendor.qti.hardware.limits@1.0-service.rc
+vendor/etc/vintf/manifest/vendor.qti.hardware.limits@1.0-service.xml
+vendor/lib64/vendor.qti.hardware.limits@1.0.so
 
 # Listen
 vendor/lib/hw/sound_trigger.primary.bengal.so
@@ -1223,6 +1245,15 @@ vendor/lib64/libqmi_common_so.so
 vendor/lib64/libqmi_csi.so
 vendor/lib64/libqmi_encdec.so
 vendor/lib64/libqmiservices.so
+
+# QSPM
+vendor/bin/vendor.qti.qspmhal@1.0-service
+vendor/etc/init/vendor.qti.qspmhal@1.0-service.rc
+vendor/etc/seccomp_policy/qspm.policy
+vendor/lib/vendor.qti.qspmhal@1.0-impl.so
+vendor/lib/vendor.qti.qspmhal@1.0.so
+vendor/lib64/vendor.qti.qspmhal@1.0-impl.so
+vendor/lib64/vendor.qti.qspmhal@1.0.so
 
 # RIL
 odm/lib64/vendor.oplus.hardware.radio@1.0.so
@@ -1499,6 +1530,8 @@ vendor/lib64/vendor.qti.hardware.soter@1.0.so
 
 # Thermal engine
 vendor/bin/thermal-engine
+vendor/etc/init/init_thermal-engine.rc
+vendor/etc/thermal-engine.conf
 -vendor/lib/libthermalclient.so
 -vendor/lib64/libthermalclient.so
 
@@ -1541,6 +1574,9 @@ vendor/lib64/libwvhidl.so
 
 # WiFi
 vendor/bin/cnss-daemon
+vendor/etc/hostapd/hostapd.accept
+vendor/etc/hostapd/hostapd.deny
+vendor/etc/hostapd/hostapd_default.conf
 
 # WiFi Display (system) - from lemonadep - SKQ1.210821.001
 system/framework/WfdCommon.jar|9f431b56d7f38c71089333008695dd5f717e5034
