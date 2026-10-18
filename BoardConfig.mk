@@ -44,6 +44,7 @@ BOARD_BOOT_HEADER_VERSION := 2
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_CMDLINE := \
     earlycon=msm_geni_serial,0x4a90000 \
+    loglevel=1 \
     androidboot.hardware=qcom \
     androidboot.memcg=1 \
     lpm_levels.sleep_disabled=1 \
