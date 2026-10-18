@@ -26,6 +26,11 @@
 /mnt/vendor/persist/engineermode(/.*)?               u:object_r:oem_file:s0
 /mnt/vendor/persist/OPDiagnose(/.*)?                 u:object_r:oem_file:s0
 
+# Root symlinks
+/bt_firmware(/.*)?                                   u:object_r:bt_firmware_file:s0
+/dsp(/.*)?                                           u:object_r:adsprpcd_file:s0
+/firmware(/.*)?                                      u:object_r:firmware_file:s0
+
 # Socket files
 /dev/socket/backuprestore    u:object_r:backuprestore_socket:s0
 /dev/socket/oemlogkit        u:object_r:oemlogkit_socket:s0

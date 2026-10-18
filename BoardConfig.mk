@@ -185,6 +185,10 @@ TARGET_COPY_OUT_VENDOR := vendor
 
 BOARD_CACHEIMAGE_PARTITION_SIZE := 268435456
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_ROOT_EXTRA_SYMLINKS := \
+    /vendor/firmware_mnt:/firmware \
+    /vendor/dsp:/dsp \
+    /vendor/bt_firmware:/bt_firmware
 
 # Treble
 BOARD_VNDK_VERSION := current
