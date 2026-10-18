@@ -1,0 +1,6 @@
+# The audio HAL's "writer" thread issues pipe ioctls (0x4900/0x4901) on its own
+# anonymous pipes. Platform domain.te restricts fifo_file ioctl to TCGETS via
+# `allowxperm domain domain:fifo_file ioctl { TCGETS };`, so a plain
+# `allow ... self:fifo_file ioctl` cannot let these through (still denied).
+# The calls are best-effort and audio playback works without them; silence them.
+dontaudit hal_audio_default self:fifo_file ioctl;

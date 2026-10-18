@@ -1,0 +1,8 @@
+# vdc signals its own process group with SIGKILL while shutting down
+# ("init: Sending signal 9 to service ... process group"). Platform policy grants
+# vdc no CAP_KILL, so the self-targeted signal is denied; vdc still exits with
+# status 0, so the cleanup is purely best-effort. Silence it.
+#
+# linkerconfig and odrefresh show the same denial, but both are private platform
+# domains invisible to vendor policy and are therefore left as-is.
+dontaudit vdc self:capability kill;
