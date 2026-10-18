@@ -20,8 +20,10 @@
 #include <hardware/fingerprint.h>
 #include "BiometricsFingerprint.h"
 
+#include <cutils/properties.h>
 #include <inttypes.h>
 #include <unistd.h>
+#include <cstring>
 #include <fstream>
 
 #define FINGERPRINT_ACQUIRED_VENDOR 6
@@ -42,12 +44,56 @@ namespace implementation {
 
 bool volatile dcDimState;
 bool volatile mFodCircleVisible;
+bool mIsUdfpsSensor;
 std::string lastStorePath;
 uint32_t lastGid;
+
+static bool resolveUdfpsSensor() {
+    char value[PROPERTY_VALUE_MAX] = {0};
+
+    if (property_get("persist.vendor.fingerprint.sensor_type", value, "") > 0) {
+        return !strcmp(value, "optical");
+    }
+
+    return property_get_bool("persist.vendor.fingerprint.optical.support", false);
+}
+
+static std::string readFpId() {
+    char value[PROPERTY_VALUE_MAX] = {0};
+
+    if (property_get("persist.vendor.fingerprint.fp_id", value, "") > 0) {
+        return value;
+    }
+
+    std::ifstream node("/proc/fp_id");
+    std::string id;
+
+    std::getline(node, id);
+
+    return id;
+}
+
+static bool vendorUsesStandardAuth() {
+    char value[PROPERTY_VALUE_MAX] = {0};
+    std::string fpId;
+
+    property_get("persist.sys.fp.vendor", value, "");
+
+    if (value[0] != '\0') {
+        return strstr(value, "goodix") || strstr(value, "cdfinger") || strstr(value, "fpc") ||
+               strstr(value, "chipone") || strstr(value, "jiiov");
+    }
+
+    fpId = readFpId();
+
+    return !fpId.empty() &&
+           (fpId[0] == 'G' || fpId[0] == 'F' || fpId[0] == 'C' || fpId[0] == 'J');
+}
 
 BiometricsFingerprint::BiometricsFingerprint() {
     mOplusBiometricsFingerprint = vendor::oplus::hardware::biometrics::fingerprint::V2_1::IBiometricsFingerprint::getService();
     mFodCircleVisible = false;
+    mIsUdfpsSensor = resolveUdfpsSensor();
 }
 
 
@@ -86,12 +132,14 @@ public:
     Return<void> onAuthenticated(uint64_t deviceId, uint32_t fingerId, uint32_t groupId,
         const hidl_vec<uint8_t>& token) {
         if (token.size() > 0) {
-            if (mFodCircleVisible) {
-                set(DC_DIM_PATH, dcDimState);
-            }
+            if (mIsUdfpsSensor) {
+                if (mFodCircleVisible) {
+                    set(DC_DIM_PATH, dcDimState);
+                }
 
-            set(DIMLAYER_PATH, 0);
-            set(FP_PRESS_PATH, 0);
+                set(DIMLAYER_PATH, 0);
+                set(FP_PRESS_PATH, 0);
+            }
             mFodCircleVisible = false;
         }
 
@@ -177,17 +225,21 @@ private:
 };
 
 Return<bool> BiometricsFingerprint::isUdfps(uint32_t) {
-    return false; // Back-mounted sensor (silead), not UDFPS
+    return mIsUdfpsSensor;
 }
 
 Return<void> BiometricsFingerprint::onFingerDown(uint32_t, uint32_t, float, float) {
-    set(DIMLAYER_PATH, 1);
-    set(FP_PRESS_PATH, 1);
+    if (mIsUdfpsSensor) {
+        set(DIMLAYER_PATH, 1);
+        set(FP_PRESS_PATH, 1);
+    }
     return Void();
 }
 
 Return<void> BiometricsFingerprint::onFingerUp() {
-    set(FP_PRESS_PATH, 0);
+    if (mIsUdfpsSensor) {
+        set(FP_PRESS_PATH, 0);
+    }
     return Void();
 }
 
@@ -225,26 +277,30 @@ Return<uint64_t> BiometricsFingerprint::preEnroll()  {
 
 Return<RequestStatus> BiometricsFingerprint::enroll(const hidl_array<uint8_t, 69>& hat,
     uint32_t gid, uint32_t timeoutSec)  {
-    if (!mFodCircleVisible) {
-        dcDimState = get(DC_DIM_PATH, 0);
-        set(DC_DIM_PATH, 0);
+    if (mIsUdfpsSensor) {
+        if (!mFodCircleVisible) {
+            dcDimState = get(DC_DIM_PATH, 0);
+            set(DC_DIM_PATH, 0);
+        }
+        if (get(POWER_STATUS, 3) || get(POWER_STATUS, 4)) {
+            set(NOTIFY_BLANK_PATH, 1);
+            set(AOD_MODE_PATH, 0);
+        }
+        set(DIMLAYER_PATH, 1);
     }
-    if (get(POWER_STATUS, 3) || get(POWER_STATUS, 4)) {
-	    set(NOTIFY_BLANK_PATH, 1);
-        set(AOD_MODE_PATH, 0);
-	}
     mFodCircleVisible = true;
-    set(DIMLAYER_PATH, 1);
     return OplusToAOSPRequestStatus(mOplusBiometricsFingerprint->enroll(hat, gid, timeoutSec));
 }
 
 Return<RequestStatus> BiometricsFingerprint::postEnroll()  {
-    if (mFodCircleVisible) {
-        set(DC_DIM_PATH, dcDimState);
-    }
+    if (mIsUdfpsSensor) {
+        if (mFodCircleVisible) {
+            set(DC_DIM_PATH, dcDimState);
+        }
 
-    set(DIMLAYER_PATH, 0);
-	set(FP_PRESS_PATH, 0);
+        set(DIMLAYER_PATH, 0);
+        set(FP_PRESS_PATH, 0);
+    }
     mFodCircleVisible = false;
     return OplusToAOSPRequestStatus(mOplusBiometricsFingerprint->postEnroll());
 }
@@ -255,12 +311,14 @@ Return<uint64_t> BiometricsFingerprint::getAuthenticatorId()  {
 }
 
 Return<RequestStatus> BiometricsFingerprint::cancel()  {
-    if (mFodCircleVisible) {
-        set(DC_DIM_PATH, dcDimState);
-    }
+    if (mIsUdfpsSensor) {
+        if (mFodCircleVisible) {
+            set(DC_DIM_PATH, dcDimState);
+        }
 
-    set(DIMLAYER_PATH, 0);
-	set(FP_PRESS_PATH, 0);
+        set(DIMLAYER_PATH, 0);
+        set(FP_PRESS_PATH, 0);
+    }
     mFodCircleVisible = false;
 
     if (mOplusBiometricsFingerprint->cancel() == vendor::oplus::hardware::biometrics::fingerprint::V2_1::RequestStatus::SYS_OK) {
@@ -290,16 +348,24 @@ Return<RequestStatus> BiometricsFingerprint::setActiveGroup(uint32_t gid,
 }
 
 Return<RequestStatus> BiometricsFingerprint::authenticate(uint64_t operationId, uint32_t gid)  {
-    if (!mFodCircleVisible) {
-        dcDimState = get(DC_DIM_PATH, 0);
-        set(DC_DIM_PATH, 0);
+    if (mIsUdfpsSensor) {
+        if (!mFodCircleVisible) {
+            dcDimState = get(DC_DIM_PATH, 0);
+            set(DC_DIM_PATH, 0);
+        }
+        set(DIMLAYER_PATH, 1);
+        set(FP_PRESS_PATH, 0);
     }
     mFodCircleVisible = true;
 
-    set(DIMLAYER_PATH, 1);
-	set(FP_PRESS_PATH, 0);
-    ALOGE("auth");
-    return OplusToAOSPRequestStatus(mOplusBiometricsFingerprint->authenticate(operationId, gid));
+    if (vendorUsesStandardAuth()) {
+        ALOGE("auth std");
+        return OplusToAOSPRequestStatus(mOplusBiometricsFingerprint->authenticate(operationId, gid));
+    }
+
+    ALOGE("auth type");
+    return OplusToAOSPRequestStatus(mOplusBiometricsFingerprint->authenticateAsType(operationId, gid,
+            vendor::oplus::hardware::biometrics::fingerprint::V2_1::FingerprintAuthType::TYPE_KEYGUARD));
 }
 
 }  // namespace implementation
