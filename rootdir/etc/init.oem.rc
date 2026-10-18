@@ -9,22 +9,9 @@
 ### ------------------------------------------------------------------------------
 ### jiangyg@PM                     2013-10-21                Create this file
 ##################################################################################
-#Load WLAN driver
-
-import /vendor/etc/init/hw/init.cust.rc
-
-on property:wlan.driver.status=ok
-    start load_wlan_driver
-
-service load_wlan_driver /vendor/bin/sh /vendor/bin/load_wlan_driver
-    class main
-    disabled
-    oneshot
-
 on charger
     setprop persist.vendor.oem.dump 0
     setprop persist.vendor.oem.ssrdump 0
-    start oemlogkit
 
 on fs
     #yankelong add
@@ -132,10 +119,6 @@ on fs
     chown system system /sys/class/leds/led:switch_3/brightness
     chmod 666 /sys/class/leds/led:switch_3/brightness
     mkdir /mnt/vendor/persist/camera 0777 system system
-#add for laser
-    chown system system /dev/stmvl53l1_ranging
-    chmod 0666 /dev/stmvl53l1_ranging
-    start vl53l1_daemon_main
 #add for ams-tof
     chown system system /sys/kernel/tof_control/app0/capture
     chmod 666 /sys/kernel/tof_control/app0/capture
@@ -288,24 +271,6 @@ on boot
     chmod 666 /dev/input/event2
     chmod 666 /dev/input/event8
     chmod 666 /dev/input/event10
-#endif /*VENDOR_EDIT*/
-
-#add for tp firmware update
-    write /sys/devices/platform/soc/a94000.i2c/i2c-4/4-004b/tp_fw_update 0
-    write /sys/devices/platform/soc/a94000.i2c/i2c-4/4-0048/tp_fw_update 0
-    write /sys/devices/platform/soc/984000.i2c/i2c-4/4-005d/tp_fw_update 0
-    write /sys/devices/platform/soc/984000.i2c/i2c-4/4-0048/tp_fw_update 0
-    write /sys/devices/platform/soc/a94000.i2c/i2c-4/4-005d/tp_fw_update 0
-    write /sys/devices/platform/soc/880000.i2c/i2c-0/0-0038/tp_fw_update 0
-    write /sys/devices/platform/soc/880000.spi/spi_master/spi0/spi0.0/tp_fw_update 0
-    write /sys/devices/platform/soc/a90000.i2c/i2c-3/3-0020/tp_fw_update 0
-    write /sys/devices/platform/soc/a90000.i2c/i2c-4/4-0020/tp_fw_update 0
-#add for n200
-    write /sys/devices/platform/soc/4a80000.spi/spi_master/spi0/spi0.0/tp_fw_update 0
-
-#ifdef VENDOR_EDIT
-#niku.huang@SYSTEM, 2020/12/30, Add for enable round corner
-    setprop vendor.display.disable_rounded_corner 0
 #endif /*VENDOR_EDIT*/
 
 on init
