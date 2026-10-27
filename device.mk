@@ -320,8 +320,7 @@ PRODUCT_PACKAGES += \
 # LiveDisplay
 PRODUCT_PACKAGES += \
     vendor.lineage.livedisplay@2.0-service-sysfs
-# DebugFS
-PRODUCT_SET_DEBUGFS_RESTRICTIONS := true
+
 # Media
 # SM8250 HAL has SM4250 configurations.
 MEDIA_HAL_DIR := hardware/qcom-caf/sm8250/media
