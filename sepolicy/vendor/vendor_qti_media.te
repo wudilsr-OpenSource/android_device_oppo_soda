@@ -1,0 +1,8 @@
+# init.qcom.early_boot.sh probes several vidc SKU variants
+# (e.g. aa00000/5a00000.qcom,vidc1/sku_version). Only 5a00000.qcom,vidc
+# exists on soda; the extra ...vidc1/sku_version paths are absent and resolve
+# to the generic sysfs label, producing a purely cosmetic read denial. The real
+# node (5a00000.qcom,vidc/sku_version) is vendor_sysfs_sku and is already
+# allowed by the QC qti-media policy. Silence the noise without changing
+# behavior (the failed read still falls back to the script's default).
+dontaudit vendor_qti_media sysfs:file read;
