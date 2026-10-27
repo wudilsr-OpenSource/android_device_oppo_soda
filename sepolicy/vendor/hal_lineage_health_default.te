@@ -1,0 +1,9 @@
+# Lineage Health charging control.
+# soda's TARGET_HEALTH_CHARGING_CONTROL_CHARGING_PATH is
+# /sys/class/power_supply/battery/mmi_charging_enable, which is labeled with the
+# QC vendor type vendor_sysfs_battery_supply. The Lineage base policy
+# (device/lineage/sepolicy/qcom/vendor) only grants hal_lineage_health_default
+# access to the system-typed sysfs_battery_supply, so the write to the vendor
+# node would be silently denied. Grant the vendor-typed battery_supply so the
+# charging enable/disable toggle actually reaches the node.
+rw_dir_file(hal_lineage_health_default, vendor_sysfs_battery_supply)
