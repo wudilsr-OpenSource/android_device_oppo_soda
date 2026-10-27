@@ -27,9 +27,6 @@
 #
 #
 
-on early-init
-    exec u:r:vendor_modprobe:s0 -- /vendor/bin/modprobe -a -d /vendor/lib/modules q6_pdr_dlkm q6_notifier_dlkm snd_event_dlkm apr_dlkm adsp_loader_dlkm q6_dlkm native_dlkm usf_dlkm pinctrl_lpi_dlkm swr_dlkm swr_ctrl_dlkm platform_dlkm stub_dlkm wcd_core_dlkm wcd9xxx_dlkm wsa881x_analog_dlkm aw87xxx_dlkm sia81xx_dlkm bolero_cdc_dlkm va_macro_dlkm rx_macro_dlkm tx_macro_dlkm mbhc_dlkm wcd937x_dlkm wcd937x_slave_dlkm pm2250_spmi_dlkm rouleur_dlkm rouleur_slave_dlkm machine_dlkm
-
 on init
     write /dev/stune/foreground/schedtune.sched_boost_no_override 1
     write /dev/stune/top-app/schedtune.sched_boost_no_override 1
