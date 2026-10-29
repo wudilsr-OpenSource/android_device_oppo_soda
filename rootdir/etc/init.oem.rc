@@ -389,7 +389,6 @@ on post-fs-data
     chown system system /sys/module/houston/parameters/game_info
     # fps stabilizer
     chown system system /sys/module/houston/parameters/efps_max
-    chown system system /sys/module/houston/parameters/fps_boost_strategy
     chown system system /sys/module/houston/parameters/egl_buf
     chown system system /sys/module/houston/parameters/ht_online_config_update
 
