@@ -64,8 +64,6 @@ on late-fs
 
 on post-fs-data
     mkdir /vendor/data/tombstones 0771 system system
-    mkdir /data/vendor/mac_addr 0771 system system
-    mkdir /data/oplus_charge 0777 system system
 
 on early-boot
     start vendor.sensors
