@@ -3055,19 +3055,64 @@
         <ctl name="TX DMIC MUX0" value="DMIC5" />
     </path>
 
+    <!-- soda dual speaker: RX0/EAR_RDAC/aw87xxx_1 top, RX1/AUX_RDAC/aw87xxx_0 bottom -->
     <path name="speaker">
+        <ctl name="RX_MACRO RX0 MUX" value="AIF1_PB" />
+        <ctl name="RX_MACRO RX1 MUX" value="AIF1_PB" />
+        <ctl name="RX_CDC_DMA_RX_0 Channels" value="Two" />
+        <ctl name="RX INT0_1 MIX1 INP0" value="RX0" />
+        <ctl name="RX INT0 DEM MUX" value="CLSH_DSM_OUT" />
+        <ctl name="EAR_RDAC Switch" value="1" />
+        <ctl name="RDAC3_MUX" value="RX1" />
+        <ctl name="RX_EAR Mode" value="ON" />
+        <ctl name="aw87xxx_mode_switch_1" value="Music" />
+        <ctl name="RX INT2_1 MIX1 INP0" value="RX1" />
+        <ctl name="RX HPH Mode" value="CLS_AB" />
+        <ctl name="AUX_RDAC Switch" value="1" />
+        <ctl name="RX_RX0 Digital Volume" value="78" />
+        <ctl name="RX_RX2 Digital Volume" value="84" />
+        <ctl name="aw87xxx_mode_switch_0" value="Music" />
+        <ctl name="SpkrMonoL Sia81xx Power" value="On" />
+        <ctl name="SpkrMonoR Sia81xx Power" value="On" />
+    </path>
+
+    <!-- speaker-mono: bottom path only, for voice call / MMI -->
+    <path name="speaker-mono">
         <ctl name="RX_MACRO RX1 MUX" value="AIF1_PB" />
         <ctl name="RX_CDC_DMA_RX_0 Channels" value="One" />
         <ctl name="RX INT2_1 MIX1 INP0" value="RX1" />
         <ctl name="RX HPH Mode" value="CLS_AB" />
         <ctl name="AUX_RDAC Switch" value="1" />
-        <ctl name="RX_RX2 Digital Volume" value="78" />
-        <ctl name="Ext_BOTTOM_Speaker_Amp" value="On" />
+        <ctl name="RX_RX2 Digital Volume" value="84" />
         <ctl name="aw87xxx_mode_switch_0" value="Music" />
+        <ctl name="SpkrMonoL Sia81xx Power" value="On" />
     </path>
 
-    <path name="speaker-mono">
-        <path name="speaker" />
+    <!-- MMI speaker test, matches stock odm -->
+    <path name="mmi-speaker-right">
+        <path name="speaker-mono" />
+    </path>
+
+    <path name="mmi-speaker-left">
+        <ctl name="RX_MACRO RX0 MUX" value="AIF1_PB" />
+        <ctl name="RX_CDC_DMA_RX_0 Channels" value="One" />
+        <ctl name="RX INT0_1 MIX1 INP0" value="RX0" />
+        <ctl name="RX INT0 DEM MUX" value="CLSH_DSM_OUT" />
+        <ctl name="EAR_RDAC Switch" value="1" />
+        <ctl name="RDAC3_MUX" value="RX1" />
+        <ctl name="RX_EAR Mode" value="ON" />
+        <ctl name="aw87xxx_mode_switch_1" value="Music" />
+        <ctl name="RX_RX0 Digital Volume" value="78" />
+        <ctl name="SpkrMonoL Sia81xx Power" value="On" />
+    </path>
+
+    <path name="mmi-receiver">
+        <path name="handset" />
+    </path>
+
+    <path name="mmi-mic-record">
+        <path name="amic1" />
+        <ctl name="TX_DEC2 Volume" value="84" />
     </path>
 
     <path name="speaker-mono-2">
@@ -3134,8 +3179,8 @@
         <ctl name="RX INT1 DEM MUX" value="CLSH_DSM_OUT" />
         <ctl name="HPHL_RDAC Switch" value="1" />
         <ctl name="HPHR_RDAC Switch" value="1" />
-        <ctl name="RX_RX0 Digital Volume" value="82" />
-        <ctl name="RX_RX1 Digital Volume" value="82" />
+        <ctl name="RX_RX0 Digital Volume" value="80" />
+        <ctl name="RX_RX1 Digital Volume" value="80" />
     </path>
 
     <path name="headphones-44.1">
@@ -3179,8 +3224,9 @@
         <path name="speaker-mono" />
     </path>
 
+    <!-- voice-speaker-stereo: bottom path only, same as voice-speaker -->
     <path name="voice-speaker-stereo">
-        <path name="speaker" />
+        <path name="speaker-mono" />
     </path>
 
     <path name="voice-speaker-2">
@@ -3207,9 +3253,29 @@
         <path name="headset-mic" />
     </path>
 
+    <!-- speaker-and-headphones: 21 stock ctl, do not use path refs -->
     <path name="speaker-and-headphones">
-        <path name="headphones" />
-        <path name="speaker" />
+        <ctl name="RX_MACRO RX0 MUX" value="AIF1_PB" />
+        <ctl name="RX_MACRO RX1 MUX" value="AIF1_PB" />
+        <ctl name="RX_CDC_DMA_RX_0 Channels" value="Two" />
+        <ctl name="RX INT0_1 MIX1 INP0" value="RX0" />
+        <ctl name="RX INT1_1 MIX1 INP0" value="RX1" />
+        <ctl name="RX INT0 DEM MUX" value="CLSH_DSM_OUT" />
+        <ctl name="RX INT1 DEM MUX" value="CLSH_DSM_OUT" />
+        <ctl name="HPHL_RDAC Switch" value="1" />
+        <ctl name="HPHR_RDAC Switch" value="1" />
+        <ctl name="RX INT2_1 MIX1 INP0" value="RX1" />
+        <ctl name="RX HPH Mode" value="CLS_H_ULP" />
+        <ctl name="EAR_RDAC Switch" value="1" />
+        <ctl name="RDAC3_MUX" value="RX1" />
+        <ctl name="AUX_RDAC Switch" value="1" />
+        <ctl name="RX_RX0 Digital Volume" value="78" />
+        <ctl name="RX_RX1 Digital Volume" value="78" />
+        <ctl name="RX_RX2 Digital Volume" value="84" />
+        <ctl name="aw87xxx_mode_switch_1" value="Music" />
+        <ctl name="aw87xxx_mode_switch_0" value="Music" />
+        <ctl name="SpkrMonoL Sia81xx Power" value="On" />
+        <ctl name="SpkrMonoR Sia81xx Power" value="On" />
     </path>
 
     <path name="speaker-safe-and-headphones">
