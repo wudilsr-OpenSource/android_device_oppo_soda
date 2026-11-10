@@ -150,16 +150,3 @@ service dcvs-sh /vendor/bin/init.qti.dcvs.sh
 
 on property:vendor.dcvs.prop=1
    start dcvs-sh
-
-# Override vendor adsprpcd to disable crash loop (ADSP firmware not ready)
-service vendor.adsprpcd /vendor/bin/adsprpcd
-    class main
-    user system
-    group media
-    disabled
-
-service vendor.adsprpcd_audiopd /vendor/bin/adsprpcd audiopd
-    class main
-    user media
-    group media
-    disabled

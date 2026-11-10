@@ -172,8 +172,6 @@
         <device name="SND_DEVICE_IN_HEADSET_MIC_LAKALA" acdb_id="8"/>
         <device name="SND_DEVICE_IN_HEADSET_MIC_LOW_LATENCY" acdb_id="8"/>
         <!-- #endif /*OP_FEATURE_MM_NS_AEC*/ -->
-        <!-- mian.zhang@mm.audio, 2021/04/27, porting acdb_id for N100_R -->
-        <device name="SND_DEVICE_OUT_BT_A2DP" acdb_id="10"/>
     </acdb_ids>
     <backend_names>
         <device name="SND_DEVICE_OUT_HEADPHONES" backend="headphones" interface="RX_CDC_DMA_RX_0"/>
