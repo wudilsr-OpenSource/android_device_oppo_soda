@@ -193,6 +193,7 @@ PRODUCT_PACKAGES += \
     init.oem_ftm.rc \
     init.oplus.hw.rc \
     init.oplus.hw.rc.recovery \
+    init.oppo.display.rc \
     init.qcom.factory.rc \
     init.qcom.rc \
     init.qcom.usb.rc \
