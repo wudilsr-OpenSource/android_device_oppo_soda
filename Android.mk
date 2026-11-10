@@ -143,4 +143,12 @@ $(CNE_SYMLINKS): $(LOCAL_INSTALLED_MODULE)
 
 ALL_DEFAULT_INSTALLED_MODULES += $(CNE_SYMLINKS)
 
+ACDBDATA_SYMLINKS := $(TARGET_OUT_ODM)/etc/acdbdata
+$(ACDBDATA_SYMLINKS): $(LOCAL_INSTALLED_MODULE)
+	@echo "Creating acdbdata symlinks: $@"
+	@mkdir -p $@
+	$(hide) ln -sf /vendor/etc/acdbdata/adsp_avs_config.acdb $@/adsp_avs_config.acdb
+
+ALL_DEFAULT_INSTALLED_MODULES +=  $(ACDBDATA_SYMLINKS)
+
 endif
