@@ -36,6 +36,20 @@ datamode=`getprop persist.vendor.data.mode`
 low_ram=`getprop ro.config.low_ram`
 qcrild_status=true
 
+#
+# ifdef VENDOR_EDIT
+# add for dual sim card config
+dual_sim=`cat /sys/module/printk/parameters/dual_sim`
+
+if [ "$dual_sim" = "Y" ]
+then
+    setprop ro.vendor.radio.multisim.config dsds
+else
+    setprop ro.vendor.radio.multisim.config ssss
+fi
+##endif
+#
+
 
 case "$baseband" in
     "apq" | "sda" | "qcs" )
