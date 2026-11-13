@@ -28,13 +28,7 @@
 # Firmware directory Path
 # Below macro will be read by uevent and path will
 # be added to search path for firmware loading
-# ifndef OPLUS_FEATURE_WIFI_BDF
-# Laixin@CONNECTIVITY.WIFI.BASE.HARDWARE.1065227 , 2019/10/17
-# Modify for: multi projects using different bdf, adding persist into firmware_directories
-#firmware_directories /vendor/firmware_mnt/image/
-# else /* OPLUS_FEATURE_WIFI_BDF */
 firmware_directories /mnt/vendor/persist/ /vendor/firmware_mnt/image/
-# endif /* OPLUS_FEATURE_WIFI_BDF */
 
 # the DIAG device node is not world writable/readable.
 /dev/diag                 0660   system     oem_2901
@@ -166,6 +160,9 @@ firmware_directories /mnt/vendor/persist/ /vendor/firmware_mnt/image/
 /dev/adsprpc-smd-secure   0644   system     system
 /dev/system_health_monitor 0644  radio      system
 /dev/mdss_rotator         0664   system     system
+
+#jason.an@SYSTEM, change  the permissions for FRP
+/dev/block/by-name/frp    0600   system     system
 
 #QDSS
 /dev/byte-cntr            0660   system    oem_2902
@@ -408,7 +405,6 @@ firmware_directories /mnt/vendor/persist/ /vendor/firmware_mnt/image/
 /sys/class/graphics/fb0     modes                    0664    system  graphics
 /sys/class/graphics/fb0     mode                     0664    system  graphics
 /sys/class/graphics/fb0     msm_cmd_autorefresh_en   0664    system  graphics
-*/
 
 /sys/devices/platform/soc/ae00000.qcom,mdss_mdp power/control 0664 system graphics
 
