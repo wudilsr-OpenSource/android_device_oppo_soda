@@ -14,7 +14,7 @@ using android::base::GetProperty;
 
 #define HWC_PROP "ro.boot.hwc"
 #define SKU_PROP "ro.boot.product.hardware.sku"
-#define PROJECT_PROP "ro.boot.project_name"
+#define PROJECT_PROP "ro.boot.prjname"
 
 void search_variant(const std::vector<variant_info_t> variants) {
     std::string hwc_value = GetProperty(HWC_PROP, "");
