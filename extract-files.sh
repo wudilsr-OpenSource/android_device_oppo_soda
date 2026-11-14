@@ -71,6 +71,9 @@ function blob_fixup() {
         vendor/etc/init/android.hardware.drm@1.3-service.widevine.rc)
             sed -i 's|/odm/bin/hw/android.hardware.drm@1.3-service.widevine|/vendor/bin/hw/android.hardware.drm@1.3-service.widevine|' "${2}"
             ;;
+        odm/lib64/libCOppLceTonemapAPI.so|odm/lib64/libaps_frame_registration.so)
+            "${PATCHELF}" --replace-needed "libstdc++.so" "libstdc++_vendor.so" "${2}"
+            ;;
     esac
 }
 
