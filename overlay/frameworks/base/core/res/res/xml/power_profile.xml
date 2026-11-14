@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <device name="Android">
-    <item name="none">0</item>
-    <item name="ambient on">12</item>
+    <item name="ambient.on.display0">12</item>
     <item name="screen.on.display0">46</item>
     <item name="screen.full.display0">350</item>
     <item name="bluetooth.active">120</item>
@@ -14,8 +13,6 @@
     <item name="camera.flashlight">530</item>
     <item name="camera.avg">320</item>
     <item name="gps.on">6.8</item>
-    <item name="dsp.audio">21</item>
-    <item name="dsp.video">82</item>
     <item name="bluetooth.controller.voltage">3700</item>
     <item name="radio.active">173</item>
     <item name="radio.scanning">4.4</item>
