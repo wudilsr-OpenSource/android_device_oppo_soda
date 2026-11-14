@@ -68,6 +68,9 @@ function blob_fixup() {
         system_ext/lib64/lib-imsvideocodec.so)
             grep -q libgui_shim.so "${2}" || "${PATCHELF}" --add-needed libgui_shim.so "${2}"
             ;;
+        vendor/etc/init/android.hardware.drm@1.3-service.widevine.rc)
+            sed -i 's|/odm/bin/hw/android.hardware.drm@1.3-service.widevine|/vendor/bin/hw/android.hardware.drm@1.3-service.widevine|' "${2}"
+            ;;
     esac
 }
 
