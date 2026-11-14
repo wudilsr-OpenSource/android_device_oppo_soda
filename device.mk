@@ -318,6 +318,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     vendor.lineage.health-service.default
 
+# Lineage Touch
+PRODUCT_PACKAGES += \
+    vendor.lineage.touch@1.0-service.soda
+
 # LiveDisplay
 PRODUCT_PACKAGES += \
     vendor.lineage.livedisplay@2.0-service-sysfs
