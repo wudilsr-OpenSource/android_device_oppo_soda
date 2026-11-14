@@ -37,9 +37,25 @@ static const variant_info_t soda_in_info = {
     .nfc = false,
 };
 
+// PDVT00: same FA218 board as PDVM00, stock prop ships no market name
+static const variant_info_t soda_t_info = {
+    .hwc_value = "",
+    .sku_value = "",
+    .project_name = "20022",
+
+    .brand = "OPPO",
+    .device = "OP4E36",
+    .marketname = "PDVT00",
+    .model = "PDVT00",
+    .build_fingerprint = "OPPO/PDVT00/OP4E36:11/RKQ1.201217.002/1716954220938:user/release-keys",
+
+    .nfc = false,
+};
+
 static const std::vector<variant_info_t> variants = {
     soda_cn_info,
     soda_in_info,
+    soda_t_info,
 };
 
 void vendor_load_properties() {
