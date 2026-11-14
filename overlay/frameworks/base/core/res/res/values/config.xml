@@ -592,19 +592,18 @@
     <!-- Telephony qualified networks service package name to bind to by default. -->
     <string name="config_qualified_networks_service_package">vendor.qti.iwlan</string>
 
-    <!-- Flag specifying whether or not IMS will use the ImsResolver dynamically -->
-    <bool name="config_dynamic_bind_ims">true</bool>
-
     <!-- Config determines whether to update phone object when voice registration
          state changes. Voice radio tech change will always trigger an update of
          phone object irrespective of this config -->
     <bool name="config_switch_phone_on_voice_reg_state_change">false</bool>
 
-    <!-- Boolean indicating if current platform supports BLE peripheral mode -->
-    <bool name="config_bluetooth_le_peripheral_mode_supported">true</bool>
-
-    <!-- Boolean indicating if current platform supports HFP inband ringing -->
-    <bool name="config_bluetooth_hfp_inband_ringing_support">true</bool>
+    <!-- Bluetooth controller power parameters, stock vendor values.  Consumed by
+         PowerProfile only when the corresponding power_profile.xml entry is absent
+         or non-positive. -->
+    <integer name="config_bluetooth_idle_cur_ma">7</integer>
+    <integer name="config_bluetooth_rx_cur_ma">75</integer>
+    <integer name="config_bluetooth_tx_cur_ma">93</integer>
+    <integer name="config_bluetooth_operating_voltage_mv">3700</integer>
 
     <!-- Flag indicating if the speed up audio on mt call code should be executed -->
     <bool name="config_speed_up_audio_on_mt_calls">true</bool>
